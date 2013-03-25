@@ -1,0 +1,16 @@
+%h3 Products
+%table{:border => 1}
+  %tr 
+    %th Sku
+    %th Product
+    %th Price
+    %th Action
+  -@products.each do |p|
+    %tr
+      %td= p.sku
+      %td= link_to p.description, product_path(p)
+      %td= p.price
+      -if current_user != nil
+        %td
+          = button_to 'Add to Cart', add_to_cart_path(p),
+            :id => "addToCartButton", :method => :post

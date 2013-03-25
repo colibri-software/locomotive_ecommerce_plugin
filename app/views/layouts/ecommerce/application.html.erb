@@ -11,7 +11,8 @@
       <% if current_user %>
         Welcome <%= current_user.name %>! |
         <%= link_to "Sign Out", logout_path %> |
-        <%= link_to "Cart", cart_path(current_user_cart) %> |
+        <%= link_to "Cart ($#{current_user_cart.get_total})",
+          cart_path(current_user_cart) %> |
         <%= link_to "Purchase History", purchases_path %>
       <% else %>
         <%= link_to "Sign in or sign up", login_path %>
