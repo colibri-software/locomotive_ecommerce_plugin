@@ -1,0 +1,17 @@
+%table{:border => 1}
+  %tr
+    %th Quantity
+    %th Product
+    %th Price
+    %th Total
+  -cart.orders.each do |order|
+    %tr
+      %td= order.quantity
+      %td= order.product_name
+      %td= order.product_price.round(2)
+      %td= (order.product_price * order.quantity).round(2)
+  %tr
+    %td
+    %td
+    %td
+    %td= cart.get_total.round(2)

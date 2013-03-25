@@ -1,0 +1,21 @@
+%h3 Checkout
+= form_for(@purchase, url: checkout_index_path) do |f|
+  %table{:border => 1}
+    %tr
+      %td Amount
+      %td= "$" + @purchase.amount.round(2).to_s
+    %tr
+      %td Shipping Info
+      %td= f.text_field :shipping_info
+    %tr
+      %td Billing Info
+      %td= f.text_field :billing_info
+    %tr
+      %td Credit Card Info
+      %td= text_field_tag 'cc_info'
+    %tr
+      %td I Agree To the TOS
+      %td= check_box_tag 'tos', 'yes', false, :class => 'accept_tos'
+    %tr
+      %td
+      %td= submit_tag 'Purchase'

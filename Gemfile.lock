@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     ecommerce (0.0.1)
+      haml
       locomotive_plugins (~> 1.0.0.beta10)
       rails (~> 3.2.13)
 

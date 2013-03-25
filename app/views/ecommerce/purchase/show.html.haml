@@ -1,0 +1,26 @@
+-if @purchase.completed
+  %h3 Order Complete
+  %p<
+    == Return to your #{link_to 'cart', cart_path(current_user_cart)} or #{link_to 'continue', root_path} shopping
+  %br
+  %br
+  %h3 Order Overview
+  %table{:border => 1}
+    %tr
+      %td Billing Info
+      %td= @purchase.billing_info
+    %tr
+      %td Shipping Info
+      %td= @purchase.shipping_info
+    %tr
+      %td Total
+      %td= "$" + @purchase.amount.round(2).to_s
+  %br
+  %br
+  = render :partial => 'shared/cart', :locals => {:cart => @purchase.cart}
+-else
+  %h3 Review Order
+  = render :partial => 'shared/cart', :locals => {:cart => current_user_cart}
+  %br
+  %br
+    =button_to 'Complete Order', checkout_path(@purchase), :method => :put

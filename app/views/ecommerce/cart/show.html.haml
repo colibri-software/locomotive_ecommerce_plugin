@@ -1,0 +1,35 @@
+%h3 Cart
+-if @cart.orders.count > 0
+  %table{:border => 1}
+    %tr
+      %th Quantity
+      %th Product
+      %th Price
+      %th Total
+    = form_tag cart_path(@cart), :method => :put do |f|
+      -@cart.orders.each do |order|
+        %tr
+          = hidden_field_tag "order_ids[]", order.id
+          %td
+            = text_field_tag "quantity_ids[]", order.quantity, :size => 5 
+          %td= order.product_name
+          %td= order.product_price.round(2)
+          %td= (order.product_price * order.quantity).round(2)
+          %td= link_to 'Remove', remove_from_cart_path(order.product_id),
+            :method => :delete
+      %tr
+        %td
+        %td
+        %td
+        %td= @cart.get_total.round(2)
+        %td= submit_tag 'Update'
+  %br
+  %br
+  = button_to 'Checkout', new_checkout_path, :method => :get
+-else
+  We're sorry, your cart is currently empty.
+  %br
+  %br
+  You can add products from the 
+  =link_to 'Products', root_path 
+  page
