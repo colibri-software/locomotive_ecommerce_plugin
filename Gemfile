@@ -15,3 +15,7 @@ gem "jquery-rails"
 
 # To use debugger
 # gem 'debugger'
+
+
+# TEMP
+gem 'flash-dance', :git => 'https://github.com/MunkiPhD/flash-dance.git'

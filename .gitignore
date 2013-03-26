@@ -8,6 +8,9 @@
 /log/*.log
 /tmp
 
+# Ignore dummy logs
+/spec/dummy/log/*.log
+
 # Ignore photos
 /public/photos
 
