@@ -8,9 +8,9 @@ Ecommerce::Engine.routes.draw do
   match "remove_from_cart/:product_id" => "order#destroy",
     :via => :delete, :as => "remove_from_cart"
 
-  resources :checkout, :controller => "purchase", :except => [:edit, :index]
-  match "purchases" => "purchase#index",
-    :via => :get, :as => "purchases"
+  resources :checkout,  :controller => "purchase", :except => [:edit, :index]
+  resources :purchases, :controller => "purchase", :only => [:index]
+
   match "order_complete" => "purchase#update",
     :via => :get, :as => "order_complete"
 

@@ -29,6 +29,13 @@ module Ecommerce
         visit product_path(product)
         page.should_not have_link('Add to Cart')
       end
+
+      it "should not allow viewing of a cart" do
+        ApplicationController.any_instance.stub(:inventory_items).and_return([])
+        cart = Cart.create
+        visit cart_path(cart)
+        page.should have_content('Authentication needed')
+      end
     end
 
     # Logged in
