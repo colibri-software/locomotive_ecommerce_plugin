@@ -18,23 +18,23 @@ module Ecommerce
 
     # Not logged in
     describe "when the user isn't signed in" do
-      it "should not have a view cart link" do #  if the user isn't signed in" do
+      it "should have a view cart link" do
         ApplicationController.any_instance.stub(:inventory_items).and_return([])
         visit root_path
-        page.should_not have_link('Cart ($0)')
+        page.should have_link('Cart ($0)')
       end
 
-      it "should not have an add to cart link on the product page" do
+      it "should have an add to cart link on the product page" do
         product = fake_product
         visit product_path(product)
-        page.should_not have_link('Add to Cart')
+        page.should have_button('Add to Cart')
       end
 
       it "should not allow viewing of a cart" do
         ApplicationController.any_instance.stub(:inventory_items).and_return([])
         cart = Cart.create
         visit cart_path(cart)
-        page.should have_content('Authentication needed')
+        page.should_not have_content('cart is currently empty')
       end
     end
 
@@ -174,6 +174,24 @@ module Ecommerce
       end
     end
 
+    describe "cart merging" do
+      it "merges carts when the user signs in" do
+        product = fake_product
+        visit root_path
+        guest_cart = Cart.first
+        guest_cart.orders.count.should == 0
+        visit product_path(product)
+        find_button('Add to Cart').click
+        guest_cart.orders.count.should == 1
+
+        user = login
+        user_cart = Cart.for_user(user.id)
+        user_cart.orders.count.should == 1
+        Cart.count.should == 1
+        Cart.first.should == user_cart
+      end
+    end
+
     # Helpers
     protected
     def login
@@ -195,8 +213,6 @@ module Ecommerce
         price:       '50.0',
         picture:     '',
         id:          BSON::ObjectId.new
-      #      products = [product]
-      #      Array.any_instance.stub(:where).and_return(product)
       product.stub(:where).and_return(product)
       product.stub(:first).and_return(product)
       ApplicationController.any_instance.stub(:inventory_items).and_return(

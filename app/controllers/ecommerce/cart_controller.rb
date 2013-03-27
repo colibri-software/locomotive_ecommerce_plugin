@@ -1,6 +1,5 @@
 module Ecommerce
   class CartController < ApplicationController
-    before_filter :authenticate_user!
     def show
       @cart = Cart.find(params[:id])
       redirect_to root_path if current_user_cart != @cart

@@ -22,7 +22,8 @@ module Ecommerce
     helper_method :current_user_cart
 
     def current_user_cart
-      Cart.for_user(current_user.id) if current_user
+      id = current_user == nil ? nil : current_user.id
+      Cart.find_or_create(id, session)
     end
 
 
