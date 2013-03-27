@@ -29,6 +29,16 @@ module Ecommerce
       orders.each { |order| total += order.quantity * order.product_price }
       return total
     end
+    
+    def update_from_params(params)
+      to_update = Order.find(params[:order_ids])
+      count = 0
+      to_update.each do |order|
+        order.quantity = params[:quantity_ids][count] if order.cart_id == id
+        count += 1
+        order.save!
+      end
+    end
 
     # merge in contents of another cart
     def merge(cart)

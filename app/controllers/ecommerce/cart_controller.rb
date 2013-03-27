@@ -6,13 +6,8 @@ module Ecommerce
     end
 
     def update
-      orders = Order.find(params[:order_ids])
-      count = 0
-      orders.each do |order|
-        order.quantity = params[:quantity_ids][count]
-        count += 1
-        order.save!
-      end
+      @cart = Cart.find(params[:id])
+      @cart.update_from_params(params)
       flash_me(:success, 'Updated cart')
       redirect_to cart_path(current_user_cart)
     end
