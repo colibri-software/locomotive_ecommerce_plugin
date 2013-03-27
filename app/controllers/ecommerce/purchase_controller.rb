@@ -3,6 +3,7 @@ module Ecommerce
     before_filter :authenticate_user!
 
     def new
+      redirect_to cart_path(current_user_cart) if !current_user_cart.valid_stock?
       @purchase = Purchase.new
       @purchase.amount = current_user_cart.get_total
     end
@@ -30,6 +31,7 @@ module Ecommerce
       @purchase = Purchase.find(params[:id])
       @purchase.cart = current_user_cart
       @purchase.cart.user_id = nil
+      @purchase.complete
 
       new_cart = Cart.create
       new_cart.user_id = current_user.id

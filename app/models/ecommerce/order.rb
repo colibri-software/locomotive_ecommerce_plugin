@@ -30,6 +30,21 @@ module Ecommerce
       i == nil ? '' : i.description
     end
 
+    def product_quantity
+      i = product_class.where(:_id => product_id).first
+      i == nil ? 0 : i.quantity
+    end
+
+    def product_quantity=(value)
+      i = product_class.where(:_id => product_id).first
+      i.quantity = value
+      i.save!
+    end
+
+    def out_of_stock?
+      quantity > product_quantity
+    end
+
     private
     def product_class
       Inventory::InventoryItem

@@ -3,6 +3,9 @@ module Ecommerce
     def show
       @cart = Cart.find(params[:id])
       redirect_to root_path if current_user_cart != @cart
+      if !@cart.valid_stock?
+        flash_me_now(:error, 'Some products have insufficient stock.')
+      end
     end
 
     def update

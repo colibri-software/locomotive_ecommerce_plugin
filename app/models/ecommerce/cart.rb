@@ -48,6 +48,11 @@ module Ecommerce
       end
     end
 
+    def valid_stock?
+      orders.each { |order| return false if order.out_of_stock? }
+      return true
+    end
+
     # self methods
     def self.for_user(id)
       cart = where(:user_id => id).first || create(:user_id => id)

@@ -10,5 +10,9 @@ module Ecommerce
     has_one :cart,          :class_name => "::Ecommerce::Cart"
     
     validates_presence_of :shipping_info, :billing_info
+
+    def complete
+      cart.orders.each { |order| order.product_quantity -= order.quantity }
+    end
   end
 end

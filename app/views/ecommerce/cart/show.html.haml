@@ -2,6 +2,7 @@
 -if @cart.orders.count > 0
   %table{:border => 1}
     %tr
+      %th
       %th Quantity
       %th Product
       %th Price
@@ -9,6 +10,9 @@
     = form_tag cart_path(@cart), :method => :put do |f|
       -@cart.orders.each do |order|
         %tr
+          %td
+            -if order.out_of_stock?
+              Insufficient stock
           = hidden_field_tag "order_ids[]", order.id
           %td
             = text_field_tag "quantity_ids[]", order.quantity, :size => 5 

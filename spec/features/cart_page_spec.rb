@@ -145,6 +145,8 @@ module Ecommerce
           set_field_by_id('purchase_billing_info', 'also non-empty')
           set_field_by_id('tos', true)
           find_button('Purchase').click
+          new_q = @product.quantity - 1
+          @product.should_receive(:quantity=).with(new_q).and_return(true)
         end
 
         it "should have content thanking the user for their purchase" do
@@ -215,6 +217,8 @@ module Ecommerce
         id:          BSON::ObjectId.new
       product.stub(:where).and_return(product)
       product.stub(:first).and_return(product)
+      product.stub(:quantity).and_return(100)
+      product.stub(:save!).and_return(true)
       ApplicationController.any_instance.stub(:inventory_items).and_return(
         product)
         Order.any_instance.stub(:product_class).and_return(product)
