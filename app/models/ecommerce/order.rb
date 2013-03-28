@@ -19,6 +19,11 @@ module Ecommerce
     def quantity
       self[:quantity]
     end
+    
+    def product_sku
+      i = product_class.where(:_id => product_id).first
+      i == nil ? '' : i.sku
+    end
 
     def product_price
       i = product_class.where(:_id => product_id).first

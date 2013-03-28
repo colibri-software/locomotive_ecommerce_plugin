@@ -62,6 +62,12 @@ module Ecommerce
       cart_id = session[:cart_id]
       if cart_id != nil
         cart = where(:_id => cart_id).first
+
+        if cart == nil
+          session[:cart_id] = nil
+          return find_or_create(id, session)
+        end
+
         return cart if id == nil
 
         session[:cart_id] = nil

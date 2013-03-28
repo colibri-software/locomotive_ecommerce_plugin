@@ -48,5 +48,23 @@ module Ecommerce
     def index
       @purchases = Purchase.where(:user_id => current_user.id)
     end
+
+    def push
+      to_send = Purchase.where(:completed => true, :transmitted => false)
+      to_send.each do |send|
+        summary = {}
+        send.cart.orders.each do |order|
+          summary[order.product_sku] = order.quantity
+        end
+        Remote::Order.create(
+          shipping_info: send.shipping_info,
+          billing_info:  send.billing_info,
+          summary:       summary)
+        send.transmitted = true
+        send.save!
+      end
+      flash[:notice] = "Pushing orders."
+      redirect_to :back
+    end
   end
 end

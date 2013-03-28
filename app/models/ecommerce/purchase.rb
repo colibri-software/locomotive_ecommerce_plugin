@@ -7,6 +7,7 @@ module Ecommerce
     field   :completed,     :type => Boolean, :default => false
     field   :amount,        :type => Float
     field   :user_id,       :type => ::BSON::ObjectId
+    field   :transmitted,   :type => Boolean, :default => false
     has_one :cart,          :class_name => "::Ecommerce::Cart"
     
     validates_presence_of :shipping_info, :billing_info

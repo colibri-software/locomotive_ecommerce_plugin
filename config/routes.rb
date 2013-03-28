@@ -13,6 +13,9 @@ Ecommerce::Engine.routes.draw do
 
   match "order_complete" => "purchase#update",
     :via => :get, :as => "order_complete"
+  match "push_orders"    => "purchase#push",
+    :via => :get, :as => "push_orders"
 
   resources :products, :only => [:index, :show]
+
 end
