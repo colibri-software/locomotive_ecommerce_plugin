@@ -50,6 +50,10 @@ module Ecommerce
     end
 
     def push
+      if !locomotive_user?
+        redirect_to root_path
+        return
+      end
       to_send = Purchase.where(:completed => true, :transmitted => false)
       to_send.each do |send|
         summary = {}

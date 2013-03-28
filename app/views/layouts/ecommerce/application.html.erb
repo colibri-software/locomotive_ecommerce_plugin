@@ -17,14 +17,13 @@
       <% end %>
       <%= link_to "Cart ($#{current_user_cart.get_total})",
         cart_path(current_user_cart) %>
+        <% if locomotive_user? %>
+          | <%= link_to 'Push Orders', push_orders_path %>
+        <% end %>
     </div>
     <br />
     <%= render_flash_messages %>
 
     <%= yield %>
-
-    <br />
-    TEST:
-    <%= link_to 'Push Orders', push_orders_path %>
   </body>
 </html>

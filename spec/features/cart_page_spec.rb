@@ -18,6 +18,10 @@ module Ecommerce
 
     # Not logged in
     describe "when the user isn't signed in" do
+      before(:each) do
+        ApplicationController.any_instance.stub(:locomotive_user?).and_return(false)
+      end
+
       it "should have a view cart link" do
         ApplicationController.any_instance.stub(:inventory_items).and_return([])
         visit root_path
@@ -178,6 +182,7 @@ module Ecommerce
 
     describe "cart merging" do
       it "merges carts when the user signs in" do
+        ApplicationController.any_instance.stub(:locomotive_user?).and_return(false)
         product = fake_product
         visit root_path
         guest_cart = Cart.first
@@ -199,6 +204,7 @@ module Ecommerce
     def login
       user = FakeUser.create(:name => 'test')
       ApplicationController.any_instance.stub(:current_user).and_return(user)
+      ApplicationController.any_instance.stub(:locomotive_user?).and_return(false)
       visit cart_path(user.cart)
       return user
     end

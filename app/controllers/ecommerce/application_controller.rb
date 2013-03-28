@@ -1,6 +1,6 @@
 module Ecommerce
   class ApplicationController < ActionController::Base
-    helper_method :authenticate_user!
+    helper_method :authenticate_user!, :locomotive_user?
 
     def authenticate_user!
       if current_user == nil
@@ -9,6 +9,9 @@ module Ecommerce
       end
     end
 
+    def locomotive_user?
+      locomotive_account_signed_in?
+    end
 
     # TO FIX: USER STUFF
     helper_method :current_user
