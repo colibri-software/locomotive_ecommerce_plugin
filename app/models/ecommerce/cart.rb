@@ -6,13 +6,14 @@ module Ecommerce
     has_many   :orders,      :class_name => "::Ecommerce::Order"
 
     def add_product_by_id(product_id)
-      already_existing_order = orders.where(:product_id => product_id)
+      sku = Order.id_to_sku(product_id)
+      already_existing_order = orders.where(:sku => sku)
       if already_existing_order.count > 0
         order = already_existing_order.first
         order.quantity += 1
       else
         order = Order.new
-        order.product_id = product_id
+        order.sku = sku
         order.cart = self  
       end
       order.save!
@@ -20,7 +21,8 @@ module Ecommerce
     end
 
     def remove_product_by_id(product_id)
-      order = orders.where(:product_id => product_id)
+      sku = Order.id_to_sku(product_id)
+      order = orders.where(:sku => sku)
       order.destroy if order
     end
 
@@ -43,8 +45,8 @@ module Ecommerce
     # merge in contents of another cart
     def merge(cart)
       cart.orders.each do |order|
-        (1..order.quantity).each { |c| add_product_by_id(order.product_id) }
-        cart.remove_product_by_id(order.product_id)
+        (1..order.quantity).each { |c| add_product_by_id(order.product.id) }
+        cart.remove_product_by_id(order.product.id)
       end
     end
 

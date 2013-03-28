@@ -16,10 +16,10 @@
           = hidden_field_tag "order_ids[]", order.id
           %td
             = text_field_tag "quantity_ids[]", order.quantity, :size => 5 
-          %td= link_to order.product_name, product_path(order.product_id)
+          %td= link_to order.product_name, product_path(order.product.id)
           %td= order.product_price.round(2)
           %td= (order.product_price * order.quantity).round(2)
-          %td= link_to 'Remove', remove_from_cart_path(order.product_id),
+          %td= link_to 'Remove', remove_from_cart_path(order.product.id),
             :method => :delete
       %tr
         %td

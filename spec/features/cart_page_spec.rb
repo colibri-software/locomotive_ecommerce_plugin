@@ -227,7 +227,7 @@ module Ecommerce
       product.stub(:save!).and_return(true)
       ApplicationController.any_instance.stub(:inventory_items).and_return(
         product)
-        Order.any_instance.stub(:product_class).and_return(product)
+        Order.stub(:product_class).and_return(product)
         return product
     end
 

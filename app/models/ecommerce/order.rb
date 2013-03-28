@@ -3,7 +3,7 @@ module Ecommerce
     include Mongoid::Document
     include Mongoid::Timestamps
     field      :quantity,   :type => Integer, :default => 1 
-    field      :product_id, :type => ::BSON::ObjectId
+    field      :sku,        :type => String
     belongs_to :cart,       :class_name => "::Ecommerce::Cart"
 
     def quantity=(value)
@@ -13,7 +13,7 @@ module Ecommerce
         return false
       end
       self[:quantity] = new_quantity
-      cart.remove_product_by_id(product_id) if new_quantity < 1
+      cart.remove_product_by_id(product.id) if new_quantity < 1
     end
 
     def quantity
@@ -21,27 +21,27 @@ module Ecommerce
     end
     
     def product_sku
-      i = product_class.where(:_id => product_id).first
+      i = product
       i == nil ? '' : i.sku
     end
 
     def product_price
-      i = product_class.where(:_id => product_id).first
+      i = product
       i == nil ? 0 : i.price.to_f
     end
 
     def product_name
-      i = product_class.where(:_id => product_id).first
+      i = product
       i == nil ? '' : i.description
     end
 
     def product_quantity
-      i = product_class.where(:_id => product_id).first
+      i = product
       i == nil ? 0 : i.quantity
     end
 
     def product_quantity=(value)
-      i = product_class.where(:_id => product_id).first
+      i = product
       i.quantity = value
       i.save!
     end
@@ -50,8 +50,17 @@ module Ecommerce
       quantity > product_quantity
     end
 
+    def self.id_to_sku(id)
+      ret = product_class.where(:_id => id).first
+      ret ? ret.sku : nil
+    end
+
+    def product
+      self.class.product_class.where(:sku => sku).first
+    end
+
     private
-    def product_class
+    def self.product_class
       Inventory::InventoryItem
     end
   end
