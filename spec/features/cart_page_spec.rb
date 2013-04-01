@@ -225,10 +225,10 @@ module Ecommerce
       product.stub(:first).and_return(product)
       product.stub(:quantity).and_return(100)
       product.stub(:save!).and_return(true)
-      ApplicationController.any_instance.stub(:inventory_items).and_return(
-        product)
-        Order.stub(:product_class).and_return(product)
-        return product
+      ApplicationController.any_instance.stub(:inventory_items).and_return(product)
+      Order.stub(:product_class).and_return(product)
+      Remote::Order.stub(:create).and_return(true)
+      return product
     end
 
     def add_product
