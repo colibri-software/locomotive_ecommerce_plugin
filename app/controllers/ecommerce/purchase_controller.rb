@@ -41,6 +41,7 @@ module Ecommerce
       @purchase.completed = true
       @purchase.user_id = current_user.id
       @purchase.save!
+      send_purchase(@purchase)
       flash[:notice] = "Thank you for your purchase."
       redirect_to checkout_path(@purchase)
     end
@@ -55,20 +56,24 @@ module Ecommerce
         return
       end
       to_send = Purchase.where(:completed => true, :transmitted => false)
-      to_send.each do |send|
-        summary = {}
-        send.cart.orders.each do |order|
-          summary[order.product_sku] = order.quantity
-        end
-        Remote::Order.create(
-          shipping_info: send.shipping_info,
-          billing_info:  send.billing_info,
-          summary:       summary)
-        send.transmitted = true
-        send.save!
-      end
+      to_send.each { |send| send_purchase(send) }
       flash[:notice] = "Pushing orders."
       redirect_to :back
+    end
+
+    private
+    def send_purchase(send)
+      summary = {}
+      send.cart.orders.each do |order|
+        summary[order.product_sku] = order.quantity
+      end
+      Remote::Order.create(
+        shipping_info: send.shipping_info,
+        billing_info:  send.billing_info,
+        summary:       summary
+      )
+      send.transmitted = true
+      send.save!
     end
   end
 end
