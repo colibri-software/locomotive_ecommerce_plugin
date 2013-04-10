@@ -1,6 +1,6 @@
 module Ecommerce
   class ApplicationController < ActionController::Base
-    helper_method :authenticate_user!, :locomotive_user?
+    helper_method :locomotive_user?
 
     def authenticate_user!
       if current_user == nil
@@ -31,8 +31,6 @@ module Ecommerce
 
 
     # TO FIX: ITEMS
-    helper_method :inventory_items
-
     def inventory_items
       Inventory::InventoryUpdate.stable.inventory_items
     end
