@@ -17,5 +17,10 @@ module Ecommerce
     def inventory_items
       Inventory::InventoryUpdate.stable.inventory_items
     end
+
+    # Flash
+    def do_flash(controller)
+      controller.render_cell 'ecommerce/flash', :show, flash: controller.flash
+    end
   end
 end

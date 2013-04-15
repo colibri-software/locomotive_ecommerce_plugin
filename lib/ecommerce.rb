@@ -35,7 +35,8 @@ module Ecommerce
         product:      ProductTag,
         products:     ProductsTag,
         purchases:    PurchasesTag,
-        javascript:   JavascriptTag
+        javascript:   JavascriptTag,
+        flash:        FlashTag
       }
     end
 

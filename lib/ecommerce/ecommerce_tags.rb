@@ -55,11 +55,20 @@ module Ecommerce
     end
   end
 
+  # Non-page tags
   class JavascriptTag < Liquid::Tag
     def render(context)
       '
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/assets/jquery_ujs.js" type="text/javascript"></script>'
+    end
+  end
+
+  class FlashTag < Liquid::Tag
+    include EcommerceTagHelper
+    def render(context)
+      super
+      @plugin_obj.helper.do_flash(@plugin_obj.controller)
     end
   end
 end
