@@ -18,27 +18,22 @@ module Ecommerce
 
     # Not logged in
     describe "when the user isn't signed in" do
-      before(:each) do
-        ApplicationController.any_instance.stub(:locomotive_user?).and_return(false)
-      end
-
       it "should have a view cart link" do
         ApplicationController.any_instance.stub(:inventory_items).and_return([])
-        visit root_path
+        visit main_app.root_path
         page.should have_link('Cart ($0)')
       end
 
       it "should have an add to cart link on the product page" do
         product = fake_product
-        visit product_path(product)
+        visit main_app.product_path(product)
         page.should have_button('Add to Cart')
       end
 
-      it "should not allow viewing of a cart" do
+      it "should allow viewing of a cart" do
         ApplicationController.any_instance.stub(:inventory_items).and_return([])
-        cart = Cart.create
-        visit cart_path(cart)
-        page.should_not have_content('cart is currently empty')
+        visit main_app.cart_path
+        page.should have_content('cart is currently empty')
       end
     end
 
@@ -50,28 +45,23 @@ module Ecommerce
       end
 
       it "should have a view cart link" do
+        visit main_app.root_path
         page.should have_link('Cart ($0)')
       end
 
-      it "should not be able to view another user's cart" do
-        another_user = another_login
-        visit cart_path(another_user.cart)
-        page.should_not have_content('Quantity')
-      end
-
       it "should have an add to cart link on the product page" do
-        visit product_path(@product)
+        visit main_app.product_path(@product)
         page.should have_button('Add to Cart')
       end
 
       describe "when the product isn't already in the cart" do
         it "add to cart should increase the number of orders in the cart by one" do
-          visit product_path(@product)
+          visit main_app.product_path(@product)
           expect { find_button('Add to Cart').click }.to change(@user.cart.orders, :count).by(1)
         end
 
         it "shouldn't be able to checkout" do
-          visit cart_path(@user.cart)
+          visit main_app.cart_path
           page.should_not have_button('Checkout')
         end
       end
@@ -86,12 +76,13 @@ module Ecommerce
         end
 
         it "remove from cart should decrease the number of orders in the cart by one" do
-          visit cart_path(@user.cart)
+          visit main_app.cart_path
+          @user.cart.orders.count.should == 1
           expect { find_link('Remove').click }.to change(@user.cart.orders, :count).by(-1)
         end
 
         it "update should change the quantity" do
-          visit cart_path(@user.cart)
+          visit main_app.cart_path
           find(:css, "input[id$='quantity_ids_']").set("10")
           old_quantity = @user.cart.orders.first.quantity
           find_button('Update').click
@@ -100,7 +91,7 @@ module Ecommerce
         end
 
         it "updating with a quantity less than 1 should remove the item" do
-          visit cart_path(@user.cart)
+          visit main_app.cart_path
           find(:css, "input[id$='quantity_ids_']").set("0")
           find_button('Update').click
           @user.cart.orders.count.should equal 0
@@ -110,7 +101,7 @@ module Ecommerce
       describe "during checkout" do
         before do
           add_product
-          visit cart_path(@user.cart)
+          visit main_app.cart_path
           find_button('Checkout').click
         end
 
@@ -143,7 +134,7 @@ module Ecommerce
       describe "after checkout" do
         before do
           add_product
-          visit cart_path(@user.cart)
+          visit main_app.cart_path
           find_button('Checkout').click
           set_field_by_id('purchase_shipping_info', 'non-empty')
           set_field_by_id('purchase_billing_info', 'also non-empty')
@@ -182,12 +173,11 @@ module Ecommerce
 
     describe "cart merging" do
       it "merges carts when the user signs in" do
-        ApplicationController.any_instance.stub(:locomotive_user?).and_return(false)
         product = fake_product
-        visit root_path
+        visit main_app.root_path
         guest_cart = Cart.first
         guest_cart.orders.count.should == 0
-        visit product_path(product)
+        visit main_app.product_path(product)
         find_button('Add to Cart').click
         guest_cart.orders.count.should == 1
 
@@ -203,9 +193,12 @@ module Ecommerce
     protected
     def login
       user = FakeUser.create(:name => 'test')
-      ApplicationController.any_instance.stub(:current_user).and_return(user)
-      ApplicationController.any_instance.stub(:locomotive_user?).and_return(false)
-      visit cart_path(user.cart)
+      ::ApplicationController.subclasses.each do |controller|
+        controller.any_instance.stub(:current_user).with(any_args()).and_return(user)
+      end
+      ApplicationController.any_instance.stub(
+        :current_user).with(any_args()).and_return(user)
+      visit main_app.cart_path
       return user
     end
 
@@ -225,14 +218,14 @@ module Ecommerce
       product.stub(:first).and_return(product)
       product.stub(:quantity).and_return(100)
       product.stub(:save!).and_return(true)
-      ApplicationController.any_instance.stub(:inventory_items).and_return(product)
+      TestController.any_instance.stub(:inventory_items).and_return(product)
       Order.stub(:product_class).and_return(product)
       Remote::Order.stub(:create).and_return(true)
       return product
     end
 
     def add_product
-      visit product_path(@product)
+      visit main_app.product_path(@product)
       find_button('Add to Cart').click
     end
 

@@ -1,15 +1,11 @@
 module Ecommerce
-  class OrderController < ApplicationController
+  class OrderController < ::Ecommerce::ApplicationController
     def create
-      @order = current_user_cart.add_product_by_id(params[:product_id])
-      flash_me(:success, 'Added product to cart')
-      redirect_to cart_path(current_user_cart) 
+      do_order_create(params, self)
     end
 
     def destroy
-      @order = current_user_cart.remove_product_by_id(params[:product_id])
-      flash_me(:success, 'Removed product from cart')
-      redirect_to cart_path(current_user_cart)
+      do_order_destroy(params, self)
     end
   end
 end

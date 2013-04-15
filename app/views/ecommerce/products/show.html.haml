@@ -1,8 +1,0 @@
-%h3 Products
-%div= button_to 'Add to Cart', add_to_cart_path(@product),
-  :id => "addToCartButton", :method => :post
-%br
-%ul
-  %li= 'Sku: '     + @product.sku
-  %li= 'Product: ' + @product.description
-  %li= 'Price: '   + @product.price

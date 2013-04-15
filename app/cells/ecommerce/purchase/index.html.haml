@@ -1,0 +1,9 @@
+%h3 Purchases
+%table{:border => 1}
+  %tr
+    %th Date
+    %th Amount
+  -@purchases.each do |purchase|
+    %tr
+      %td= link_to purchase.updated_at, @url.checkout_path(purchase)
+      %td= purchase.amount

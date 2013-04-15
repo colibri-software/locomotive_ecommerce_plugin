@@ -1,0 +1,16 @@
+-if @product
+  %div= button_to 'Add to Cart', @url.add_to_cart_path(@stem, @product),
+    :id => "addToCartButton", :method => :post
+  %br
+  %ul
+    %li= 'Sku: '
+    -if @product.sku
+      =@product.sku
+    %li= 'Product: '
+    -if @product.description
+      =@product.description
+    %li= 'Price: '
+    -if @product.price
+      =@product.price
+-else
+  Product not found.
