@@ -54,4 +54,12 @@ module Ecommerce
       @plugin_obj.helper.do_purchases(@plugin_obj.controller)
     end
   end
+
+  class JavascriptTag < Liquid::Tag
+    def render(context)
+      '
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/assets/jquery_ujs.js" type="text/javascript"></script>'
+    end
+  end
 end

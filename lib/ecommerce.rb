@@ -34,7 +34,8 @@ module Ecommerce
         new_checkout: NewCheckoutTag,
         product:      ProductTag,
         products:     ProductsTag,
-        purchases:    PurchasesTag
+        purchases:    PurchasesTag,
+        javascript:   JavascriptTag
       }
     end
 
