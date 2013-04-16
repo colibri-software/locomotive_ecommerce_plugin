@@ -28,7 +28,7 @@ class TestController < ApplicationController
   
   def index_products
     @products = inventory_items
-    render :text => @flash_text + do_products('/', self)
+    render :text => @flash_text + do_products({}, '/', self)
   end
 
   def show_product

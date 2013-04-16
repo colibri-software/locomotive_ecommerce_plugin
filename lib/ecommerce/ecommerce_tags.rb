@@ -40,10 +40,22 @@ module Ecommerce
   end
 
   class ProductsTag < Liquid::Tag 
-    include EcommerceTagHelper 
+    include EcommerceTagHelper
+    Syntax = /(#{::Liquid::Expression}+)?/
+
+    def initialize(tag_name, markup, tokens, context)
+      @args = {}
+      if markup =~ Syntax
+        markup.scan(::Liquid::TagAttributes) { |key,value| @args[key] = value }
+      else
+        raise ::Liquid::SyntaxError.new("Syntax error in 'products' ")
+      end
+    end
+
     def render(context)
       super
-      @plugin_obj.helper.do_products(@plugin_obj.path, @plugin_obj.controller)
+      @plugin_obj.helper.do_products(@args, @plugin_obj.path,
+                                     @plugin_obj.controller)
     end
   end
 
