@@ -54,6 +54,7 @@ module Ecommerce
 
     def render(context)
       super
+      @args["product"] = context["params.p"] if context["params.p"]
       @plugin_obj.helper.do_products(@args, @plugin_obj.path,
                                      @plugin_obj.controller)
     end
