@@ -144,28 +144,62 @@ module Ecommerce
           @product.should_receive(:quantity=).with(new_q).and_return(true)
         end
 
-        it "should have content thanking the user for their purchase" do
-          find_button('Complete Order').click
-          page.should have_content('Thank you for your purchase')
+        it "should have content thanking the user for their purchase", js: true do
+          click_button('Pay with Card')
+          page.within_frame 0 do
+            fill_in 'paymentNumber',  with: '4242424242424242'
+            fill_in 'paymentExpiry',  with: '5/16'
+            fill_in 'paymentName',    with: 'test card holder'
+            fill_in 'paymentCVC',     with: '123'
+            click_button 'Pay'
+            page.should have_content('Thank you for your purchase')
+          end
         end
 
-        it "there should be a cart attached to the last purchase" do
-          find_button('Complete Order').click
-          Purchase.count.should == 1
-          Purchase.last.cart.orders.count.should == 1
-          Purchase.last.cart.get_total.should == @product.price.to_f
+        it "there should be a cart attached to the last purchase", js: true do
+          click_button('Pay with Card')
+          page.within_frame 0 do
+            fill_in 'paymentNumber',  with: '4242424242424242'
+            fill_in 'paymentExpiry',  with: '5/16'
+            fill_in 'paymentName',    with: 'test card holder'
+            fill_in 'paymentCVC',     with: '123'
+            click_button 'Pay'
+
+            page.should have_content('Thank you for your purchase')
+            Purchase.count.should == 1
+            Purchase.last.cart.orders.count.should == 1
+            Purchase.last.cart.get_total.should == @product.price.to_f
+          end
         end
 
-        it "the user's cart should be empty" do
-          find_button('Complete Order').click
-          @user.reload
-          @user.cart.orders.count.should == 0
-        end
+        it "the user's cart should be empty", js: true do
+          click_button('Pay with Card')
+          page.within_frame 0 do
+            fill_in 'paymentNumber',  with: '4242424242424242'
+            fill_in 'paymentExpiry',  with: '5/16'
+            fill_in 'paymentName',    with: 'test card holder'
+            fill_in 'paymentCVC',     with: '123'
+            click_button 'Pay'
 
-        it "the user's purchases should increase by one" do
-          expect do
-            find_button('Complete Order').click
+            page.should have_content('Thank you for your purchase')
             @user.reload
+            @user.cart.orders.count.should == 0
+          end
+        end
+
+        it "the user's purchases should increase by one", js: true do
+          expect do
+            click_button('Pay with Card')
+            page.within_frame 0 do
+              fill_in 'paymentNumber',  with: '4242424242424242'
+              fill_in 'paymentExpiry',  with: '5/16'
+              fill_in 'paymentName',    with: 'test card holder'
+              fill_in 'paymentCVC',     with: '123'
+              click_button 'Pay'
+
+              page.should have_content('Thank you for your purchase')
+              @user.reload
+            end
           end.to change(@user.purchases, :count).by(1)
         end
       end
@@ -198,6 +232,7 @@ module Ecommerce
       end
       ApplicationController.any_instance.stub(
         :current_user).with(any_args()).and_return(user)
+      StripeConfigurationHelper.any_instance.stub(:current_user).and_return(user)
       visit main_app.cart_path
       return user
     end

@@ -5,6 +5,9 @@ source "http://rubygems.org"
 # development dependencies will be added by default to the :development group.
 gemspec
 
+# Stripe helper
+gem 'stripe_helper', path: '../../stripe_helper'
+
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
 

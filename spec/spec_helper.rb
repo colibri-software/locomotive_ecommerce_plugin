@@ -14,6 +14,10 @@ require 'capybara/rspec'
 Rails.backtrace_cleaner.remove_silencers!
 require 'database_cleaner'
 
+require 'capybara/poltergeist'
+Capybara.javascript_driver = :poltergeist
+Capybara.default_wait_time = 30
+
 RSpec.configure do |config|
   config.color_enabled = true
   config.formatter     = 'documentation'

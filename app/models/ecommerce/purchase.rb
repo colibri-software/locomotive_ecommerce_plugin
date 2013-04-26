@@ -8,6 +8,7 @@ module Ecommerce
     field   :amount,        :type => Float
     field   :user_id,       :type => ::BSON::ObjectId
     field   :transmitted,   :type => Boolean, :default => false
+    field   :stripe_token,  :type => String
     has_one :cart,          :class_name => "::Ecommerce::Cart"
     
     validates_presence_of :shipping_info, :billing_info

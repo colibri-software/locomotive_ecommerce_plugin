@@ -1,3 +1,5 @@
+require 'stripe'
+
 module Ecommerce
   class PurchaseController < ::Ecommerce::ApplicationController
     before_filter :authenticate_user!
@@ -16,26 +18,26 @@ module Ecommerce
         @purchase.errors.full_messages.each { |msg| flash_ar << msg }
         flash[:error] = flash_ar.join(', ')
       end
+
       redirect_to new_checkout_path
     end
 
-    def update
-      @purchase = Purchase.find(params[:id])
-      @purchase.cart = current_user_cart(self)
+    def self.complete(purchase_id, user, cart, stripeToken)
+      @purchase = Purchase.where(_id: purchase_id).first
+      @purchase.cart = cart
       @purchase.cart.user_id = nil
+      @purchase.stripe_token = stripeToken
       @purchase.complete
 
       new_cart = Cart.create
-      new_cart.user_id = current_user(self).id
+      new_cart.user_id = user.id
       new_cart.save!
 
       @purchase.cart.save!
       @purchase.completed = true
-      @purchase.user_id = current_user(self).id
+      @purchase.user_id = user.id
       @purchase.save!
       send_purchase(@purchase)
-      flash[:notice] = "Thank you for your purchase."
-      redirect_to checkout_path(@purchase)
     end
 
     def push
@@ -50,7 +52,7 @@ module Ecommerce
     end
 
     private
-    def send_purchase(send)
+    def self.send_purchase(send)
       summary = {}
       send.cart.orders.each do |order|
         summary[order.product_sku] = order.quantity

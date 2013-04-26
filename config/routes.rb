@@ -9,4 +9,6 @@ Ecommerce::Engine.routes.draw do
     :via => :delete, :as => "remove_from_cart"
   match "push_orders"                  => "purchase#push",
     :via => :get,    :as => "push_orders"
+
+  mount StripeHelper::Engine => "/"
 end
