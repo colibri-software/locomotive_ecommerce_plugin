@@ -28,11 +28,15 @@ class TestController < ApplicationController
   
   def index_products
     @products = inventory_items
-    render :text => @flash_text + do_products({}, '/', self)
+    render :text => @flash_text + do_products(products_params, '/', self)
   end
 
   def show_product
     @product = inventory_items.where(:_id => params[:id]).first
     render :text => @flash_text + do_product(@product.id, '/', self)
+  end
+
+  def products_params
+    {}
   end
 end
