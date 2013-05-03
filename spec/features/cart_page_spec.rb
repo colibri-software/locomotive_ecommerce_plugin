@@ -35,6 +35,14 @@ module Ecommerce
         visit main_app.cart_path
         page.should have_content('cart is currently empty')
       end
+
+      it 'should prevent checking out' do
+        @product = fake_product
+        add_product
+        visit main_app.cart_path
+        find_button('Checkout').click
+        page.should have_content('Please login or sign up to continue.')
+      end
     end
 
     # Logged in
@@ -201,6 +209,22 @@ module Ecommerce
               @user.reload
             end
           end.to change(@user.purchases, :count).by(1)
+        end
+
+        it "it shows the purchase in the purchase history", js: true do
+          click_button('Pay with Card')
+          page.within_frame 0 do
+            fill_in 'paymentNumber',  with: '4242424242424242'
+            fill_in 'paymentExpiry',  with: '5/16'
+            fill_in 'paymentName',    with: 'test card holder'
+            fill_in 'paymentCVC',     with: '123'
+            click_button 'Pay'
+
+            page.should have_content('Thank you for your purchase')
+            visit main_app.purchases_path
+            page.should have_content('Purchases')
+            page.should have_content(@user.purchases.first.amount)
+          end
         end
       end
     end

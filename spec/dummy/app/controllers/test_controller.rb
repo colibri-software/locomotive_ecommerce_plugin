@@ -13,7 +13,8 @@ class TestController < ApplicationController
   end
 
   def new_checkout
-    render :text => @flash_text + do_purchase_new('/', self)
+    text = @flash_text + do_purchase_new('/', self)
+    render :text => text unless text.include? 'redirect'
   end
 
   def show_checkout

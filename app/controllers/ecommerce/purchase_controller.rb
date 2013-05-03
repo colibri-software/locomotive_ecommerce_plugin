@@ -2,7 +2,7 @@ require 'stripe'
 
 module Ecommerce
   class PurchaseController < ::Ecommerce::ApplicationController
-    before_filter :authenticate_user!
+    before_filter :authenticate_user!, except: [:do_new_purchase]
 
     def create
       @purchase = Purchase.new(params[:purchase])
@@ -42,11 +42,11 @@ module Ecommerce
 
     def push
       if !locomotive_user?
-        redirect_to root_path
+        redirect_to :back
         return
       end
       to_send = Purchase.where(:completed => true, :transmitted => false)
-      to_send.each { |send| send_purchase(send) }
+      to_send.each { |send| self.class.send_purchase(send) }
       flash[:notice] = "Pushing orders."
       redirect_to :back
     end
