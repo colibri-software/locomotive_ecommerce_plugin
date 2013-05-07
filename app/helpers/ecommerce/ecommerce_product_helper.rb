@@ -18,7 +18,9 @@ module Ecommerce
         'sku'      => :sku,
         'product'  => :description,
         'price'    => :product_price,
-        'quantity' => :quantity
+        'quantity' => :quantity,
+        'vendor'   => :vendor,
+        'group'    => :group
       }
 
       params.each do |k,v|
