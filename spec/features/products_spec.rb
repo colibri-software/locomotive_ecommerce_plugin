@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Ecommerce
+module HbirdEcommerce
   describe "Products pages" do
     let!(:mocks) { mocks = mock_products }
 

@@ -1,0 +1,60 @@
+require 'rubygems'
+require 'bundler/setup'
+require 'locomotive_plugins'
+require "hbird_ecommerce/engine"
+require 'hbird_ecommerce/ecommerce_drop'
+require 'hbird_ecommerce/ecommerce_tags'
+require 'cells'
+
+module HbirdEcommerce
+  class PluginHelper
+  end
+
+  class HbirdEcommerce
+    include Locomotive::Plugin
+
+    before_rack_app_request :set_config
+
+    def self.rack_app
+      Engine
+    end
+
+    def config_template_file
+      File.join(File.dirname(__FILE__), 'hbird_ecommerce', 'config.html')
+    end
+
+    def to_liquid
+      @drop ||= HbirdEcommerceDrop.new(self)
+    end
+
+    def self.liquid_tags
+      {
+        cart:         CartTag,
+        checkout:     CheckoutTag,
+        new_checkout: NewCheckoutTag,
+        product:      ProductTag,
+        products:     ProductsTag,
+        purchases:    PurchasesTag,
+        javascript:   JavascriptTag,
+        flash:        FlashTag
+      }
+    end
+
+    def helper
+      if !@helper
+        @helper = PluginHelper.new
+        @helper.instance_eval { extend HbirdEcommerceHelper }
+      end
+      return @helper
+    end
+
+    def path
+      '/locomotive/plugins/hbird_ecommerce/'
+    end
+
+    private
+    def set_config
+      mounted_rack_app.config_hash = config
+    end
+  end
+end

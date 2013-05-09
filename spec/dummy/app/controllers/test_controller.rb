@@ -2,7 +2,7 @@ class TestController < ApplicationController
   before_filter :render_flash
 
   def render_flash
-    @flash_text = render_cell 'ecommerce/flash', :show, flash: flash 
+    @flash_text = render_cell 'hbird_ecommerce/flash', :show, flash: flash 
   end
 
   ###############
@@ -18,12 +18,12 @@ class TestController < ApplicationController
   end
 
   def show_checkout
-    @purchase = Ecommerce::Purchase.find(params[:p])
+    @purchase = HbirdEcommerce::Purchase.find(params[:p])
     render :text => @flash_text + do_purchase(@purchase.id, '/', self)
   end
 
   def index_purchases
-    @purchases = Ecommerce::Purchase.where(:user_id => current_user.id)
+    @purchases = HbirdEcommerce::Purchase.where(:user_id => current_user.id)
     render :text => @flash_text + do_purchases(self)
   end
   

@@ -7,5 +7,5 @@ Rails.application.routes.draw do
   match "products"     => "test#index_products",  :as => "products",     via: :get
   match "product/:id/" => "test#show_product",    :as => "product",      via: :get
 
-  mount Ecommerce::Engine => "/"
+  mount HbirdEcommerce::Engine => "/"
 end

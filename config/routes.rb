@@ -1,4 +1,4 @@
-Ecommerce::Engine.routes.draw do
+HbirdEcommerce::Engine.routes.draw do
   resources :cart, :only => [:update]
   resources :checkout,  :controller => "purchase",
     :only => [:create, :update]

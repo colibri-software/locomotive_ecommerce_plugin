@@ -2,9 +2,9 @@ require 'stripe'
 require 'stripe_helper'
 
 ::Stripe.api_key = 'sk_test_X9DCHXrX0Siun6NdVJu9uu13'
-module Ecommerce
+module HbirdEcommerce
   class StripeConfigurationHelper
-    include EcommerceHelper
+    include HbirdEcommerceHelper
   end
 
   ::StripeHelper.configure do |config|

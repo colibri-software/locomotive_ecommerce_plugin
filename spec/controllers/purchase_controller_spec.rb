@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Ecommerce
+module HbirdEcommerce
   describe PurchaseController do
     context '#push' do
       describe 'user logged in to locomotive' do
@@ -15,7 +15,7 @@ module Ecommerce
             PurchaseController.should_receive(:send_purchase).with(mock)
           end
           Purchase.stub(:where).and_return(mocks)
-          post :push, { use_route: :ecommerce }
+          post :push, { use_route: :hbird_ecommerce }
           flash[:notice].should == 'Pushing orders.'
         end
       end
@@ -27,7 +27,7 @@ module Ecommerce
             true)
           PurchaseController.any_instance.stub(
             :locomotive_account_signed_in?).and_return(false)
-          post :push, { use_route: :ecommerce }
+          post :push, { use_route: :hbird_ecommerce }
           flash[:notice].should_not == 'Pushing orders.'
         end
       end

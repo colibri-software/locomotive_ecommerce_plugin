@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-module Ecommerce
+module HbirdEcommerce
   describe ApplicationController do
     context '#authenticate_user!' do
       context 'valid user' do
-        controller(::Ecommerce::ApplicationController) do
+        controller(::HbirdEcommerce::ApplicationController) do
           before_filter :authenticate_user!
 
           def index 
@@ -20,7 +20,7 @@ module Ecommerce
       end
 
       context 'invalid user' do
-        controller(::Ecommerce::ApplicationController) do
+        controller(::HbirdEcommerce::ApplicationController) do
           before_filter :authenticate_user!
 
           def index

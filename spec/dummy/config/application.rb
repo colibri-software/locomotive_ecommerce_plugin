@@ -10,7 +10,7 @@ require "rails/test_unit/railtie"
 
 
 Bundler.require(*Rails.groups)
-require "ecommerce"
+require "hbird_ecommerce"
 
 module Dummy
   class Application < Rails::Application

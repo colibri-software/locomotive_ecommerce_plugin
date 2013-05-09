@@ -5,15 +5,15 @@ class FakeUser
   field :name
 
   def cart
-    Ecommerce::Cart.for_user(id)
+    HbirdEcommerce::Cart.for_user(id)
   end
 
   def purchases
-    Ecommerce::Purchase.where(:user_id => id)
+    HbirdEcommerce::Purchase.where(:user_id => id)
   end
 end
 
-module Ecommerce
+module HbirdEcommerce
   describe "Cart pages" do
 
     # Not logged in

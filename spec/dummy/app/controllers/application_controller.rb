@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  include ::Ecommerce::EcommerceHelper
+  include ::HbirdEcommerce::HbirdEcommerceHelper
   helper_method :current_user, :current_user_cart, :login_path, :logout_path
 
   def current_user(*args)
