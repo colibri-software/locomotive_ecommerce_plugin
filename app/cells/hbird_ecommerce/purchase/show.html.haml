@@ -26,7 +26,7 @@
     = render_cell 'stripe_helper/stripe', :show,
         amount: @purchase.amount.round(2) * 100,
         desc:   'Test',
-        pk:     'pk_test_wx56SSu3dclTN60p9rEGcM7n',
+        pk:     @pk,
         stem:   @stem,
         store:  'The Trail Shop',
         token:  @purchase.id

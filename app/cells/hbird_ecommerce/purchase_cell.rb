@@ -12,6 +12,7 @@ module HbirdEcommerce
       @cart     = args[:cart]
       @stem     = args[:stem]
       @url      = args[:url]
+      @pk       = StripeHelper.config.public_key
       render
     end
 

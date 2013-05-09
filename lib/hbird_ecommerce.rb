@@ -55,6 +55,11 @@ module HbirdEcommerce
     private
     def set_config
       mounted_rack_app.config_hash = config
+
+      ::Stripe.api_key = mounted_rack_app.config_or_default('stripe_secret')
+      ::StripeHelper.configure do |config|
+        config.public_key = mounted_rack_app.config_or_default('stripe_public')
+      end
     end
   end
 end

@@ -1,7 +1,6 @@
 require 'stripe'
 require 'stripe_helper'
 
-::Stripe.api_key = 'sk_test_X9DCHXrX0Siun6NdVJu9uu13'
 module HbirdEcommerce
   class StripeConfigurationHelper
     include HbirdEcommerceHelper
@@ -36,6 +35,5 @@ module HbirdEcommerce
     config.charge_amount  = amt_proc
     config.charge_failure = failure_proc
     config.charge_success = success_proc
-    config.public_key     = 'pk_test_wx56SSu3dclTN60p9rEGcM7n'
   end
 end

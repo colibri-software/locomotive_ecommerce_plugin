@@ -61,7 +61,7 @@ module HbirdEcommerce
 
     private
     def self.product_class
-      Inventory::InventoryItem
+      HbirdInventory::InventoryItem
     end
   end
 end

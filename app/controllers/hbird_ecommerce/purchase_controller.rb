@@ -57,7 +57,10 @@ module HbirdEcommerce
       send.cart.orders.each do |order|
         summary[order.product_sku] = order.quantity
       end
-      Remote::Order.create(
+      order = Class.new(Remote::Order) do
+        self.site = Engine.config_or_default('app_url')
+      end
+      order.create(
         shipping_info: send.shipping_info,
         billing_info:  send.billing_info,
         summary:       summary

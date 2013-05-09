@@ -15,7 +15,7 @@ module HbirdEcommerce
 
     # Inventory
     def inventory_items
-      Inventory::InventoryUpdate.stable.inventory_items
+      HbirdInventory::InventoryUpdate.stable.inventory_items
     end
 
     # Flash

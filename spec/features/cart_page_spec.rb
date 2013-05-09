@@ -236,6 +236,7 @@ module HbirdEcommerce
         guest_cart = Cart.first
         guest_cart.orders.count.should == 0
         visit main_app.product_path(product)
+
         find_button('Add to Cart').click
         guest_cart.orders.count.should == 1
 
@@ -257,6 +258,9 @@ module HbirdEcommerce
       ApplicationController.any_instance.stub(
         :current_user).with(any_args()).and_return(user)
       StripeConfigurationHelper.any_instance.stub(:current_user).and_return(user)
+      StripeHelper.config.stub(:public_key).and_return(
+        'pk_test_wx56SSu3dclTN60p9rEGcM7n')
+      ::Stripe.api_key = 'sk_test_X9DCHXrX0Siun6NdVJu9uu13'
       visit main_app.cart_path
       return user
     end
