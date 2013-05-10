@@ -49,7 +49,7 @@ module HbirdEcommerce
     end
 
     def path
-      '/locomotive/plugins/hbird_ecommerce/'
+      rack_app_full_path('/')
     end
 
     private
