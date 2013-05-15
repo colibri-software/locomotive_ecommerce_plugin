@@ -3,8 +3,12 @@ module HbirdEcommerce
     def do_cart(path, controller)
       cart = current_user_cart(controller)
       if !cart.valid_stock?
-        controller.flash[:error] =
-          Engine.config_or_default('cart_error')
+        controller.flash[:error] = 
+          'Please note that the cart contains items which are out of stock.'
+      end
+      if controller.session[:needs_login]
+        controller.flash[:info] = 'Please login or sign up to continue.'
+        controller.session.delete(:needs_login)
       end
       controller.render_cell 'hbird_ecommerce/cart_page', :show,
         cart: cart, url: self, stem: path

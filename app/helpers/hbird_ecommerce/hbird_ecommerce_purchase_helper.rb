@@ -2,7 +2,7 @@ module HbirdEcommerce
   module HbirdEcommercePurchaseHelper
     def do_purchase_new(path, controller)
       if current_user(controller) == nil
-        controller.flash[:info] = 'Please login or sign up to continue.'
+        controller.session[:needs_login] = true
         controller.redirect_to cart_path
       else
         controller.redirect_to cart_path if !current_user_cart(controller).valid_stock?
@@ -21,9 +21,14 @@ module HbirdEcommerce
     end
 
     def do_purchases(controller)
-      purchases = Purchase.where(:user_id => current_user(controller).id)
-      controller.render_cell 'hbird_ecommerce/purchase', :index,
-        purchases: purchases, url: self
+      user = current_user(controller)
+      if user == nil
+        controller.redirect_to cart_path
+      else
+        purchases = Purchase.where(:user_id => user.id)
+        controller.render_cell 'hbird_ecommerce/purchase', :index,
+          purchases: purchases, url: self
+      end
     end
   end
 end
