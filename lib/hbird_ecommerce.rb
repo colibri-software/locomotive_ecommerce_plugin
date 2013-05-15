@@ -13,7 +13,7 @@ module HbirdEcommerce
   class HbirdEcommerce
     include Locomotive::Plugin
 
-    before_rack_app_request :set_config
+    before_page_render :set_config
 
     def self.rack_app
       Engine
@@ -55,6 +55,7 @@ module HbirdEcommerce
     private
     def set_config
       mounted_rack_app.config_hash = config
+      Remote::Order.site = Engine.config_or_default('app_url')
 
       ::Stripe.api_key = mounted_rack_app.config_or_default('stripe_secret')
       ::StripeHelper.configure do |config|

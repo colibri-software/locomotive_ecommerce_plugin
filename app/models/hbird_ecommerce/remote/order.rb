@@ -1,7 +1,7 @@
 module HbirdEcommerce
   module Remote
     class Order < ActiveResource::Base
-      self.site = "http://localhost:3030"
+      self.element_name = 'order'
     end
   end
 end

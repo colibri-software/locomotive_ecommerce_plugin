@@ -72,10 +72,10 @@ module HbirdEcommerce
 
   # Non-page tags
   class JavascriptTag < Liquid::Tag
+    include HbirdEcommerceTagHelper 
     def render(context)
-      '
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="/assets/jquery_ujs.js" type="text/javascript"></script>'
+      super
+      @plugin_obj.controller.render_cell 'hbird_ecommerce/javascript', :show
     end
   end
 
