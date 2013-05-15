@@ -3,6 +3,7 @@ module HbirdEcommerce
     def do_purchase_new(path, controller)
       if current_user(controller) == nil
         controller.session[:needs_login] = true
+        controller.flash[:info] = 'Please login or sign up to continue.'
         controller.redirect_to cart_path
       else
         controller.redirect_to cart_path if !current_user_cart(controller).valid_stock?
