@@ -1,10 +1,10 @@
 -if @purchase.completed
-  %h3 Order Complete
+  %h1 Order Complete
   %p<
     == Return to your #{link_to 'cart', @url.cart_path} or #{link_to 'continue', @url.products_path} shopping
   %br
   %br
-  %h3 Order Overview
+  %h1 Order Overview
   %table{:border => 1}
     %tr
       %td Billing Info
@@ -19,7 +19,7 @@
   %br
   = render_cell 'hbird_ecommerce/cart', :show, cart: @cart
 -else
-  %h3 Review Order
+  %h1 Review Order
   = render_cell 'hbird_ecommerce/cart', :show, cart: @cart
   %br
   %br

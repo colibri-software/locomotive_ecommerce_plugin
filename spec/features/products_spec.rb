@@ -10,8 +10,8 @@ module HbirdEcommerce
 
     it 'displays products' do
       visit main_app.products_path
-      page.should have_content('test sku')
-      page.should have_content('second sku')
+      page.should have_content('test desc')
+      page.should have_content('another desc')
     end
 
     context 'filtering' do
@@ -19,8 +19,8 @@ module HbirdEcommerce
         set_params({'sku' => 'test'})
         mocks.should_receive(:and).with(sku: /test/i).and_return([mocks[0]])
         visit main_app.products_path
-        page.should have_content('test sku')
-        page.should_not have_content('second sku')
+        page.should have_content('test desc')
+        page.should_not have_content('another desc')
       end
 
       it 'allows asc sorting' do
@@ -39,16 +39,16 @@ module HbirdEcommerce
         set_params({'quantity_max' => 6})
         mocks.should_receive(:and).with(:quantity.lt => 6).and_return([mocks[0]])
         visit main_app.products_path
-        page.should have_content('test sku')
-        page.should_not have_content('second sku')
+        page.should have_content('test desc')
+        page.should_not have_content('another desc')
       end
 
       it 'allows a minimum' do
         set_params({'quantity_min' => 6})
         mocks.should_receive(:and).with(:quantity.gt => 6).and_return([mocks[1]])
         visit main_app.products_path
-        page.should_not have_content('test sku')
-        page.should have_content('second sku')
+        page.should_not have_content('test desc')
+        page.should have_content('another desc')
       end
     end
 

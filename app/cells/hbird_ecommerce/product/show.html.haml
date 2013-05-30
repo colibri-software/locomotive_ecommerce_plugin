@@ -3,14 +3,12 @@
     :id => "addToCartButton", :method => :post
   %br
   %ul
-    %li= 'Sku: '
-    -if @product.sku
-      =@product.sku
-    %li= 'Product: '
-    -if @product.description
-      =@product.description
-    %li= 'Price: '
-    -if @product.price
-      =@product.price
+    %div{class: 'product-image'}
+    %div{class: 'product'}
+      -if @product.description
+        =@product.description
+    %div{class: 'price'}
+      -if @product.price
+        =@product.price
 -else
   Product not found.
