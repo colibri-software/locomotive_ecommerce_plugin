@@ -14,7 +14,7 @@
       %td= @purchase.shipping_info
     %tr
       %td Total
-      %td= "$" + @purchase.amount.round(2).to_s
+      %td= as_currency(@purchase.amount)
   %br
   %br
   = render_cell 'hbird_ecommerce/cart', :show, cart: @cart
@@ -25,7 +25,7 @@
   %br
     = render_cell 'stripe_helper/stripe', :show,
         amount: @purchase.amount.round(2) * 100,
-        desc:   'Test',
+        desc:   Date.today,
         pk:     @pk,
         stem:   @stem,
         store:  'The Trail Shop',

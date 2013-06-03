@@ -1,5 +1,7 @@
 module HbirdEcommerce
   class ProductCell < Cell::Rails
+    helper HbirdEcommerceHelper
+
     def index(args)
       @products = args[:products]
       @stem     = args[:stem]

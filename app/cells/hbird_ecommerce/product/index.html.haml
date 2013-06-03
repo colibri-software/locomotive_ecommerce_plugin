@@ -1,14 +1,15 @@
 %h1 Products
 %table{:border => 1, class: 'products'}
   %tr 
-    %th Sku
     %th Product
     %th Price
     %th Action
   -@products.each do |p|
     %tr
       %td{class: 'product'}= link_to p.description, @url.product_path(p)
-      %td{class: 'price'}= p.price
+      %td{class: 'price'}
+        -if p.price
+          = as_currency(p.price)
       %td{class: 'action'}
         = button_to 'Add to Cart', @url.add_to_cart_path(@stem, p),
           :id => "addToCartButton", :method => :post

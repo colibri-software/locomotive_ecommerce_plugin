@@ -1,5 +1,7 @@
 module HbirdEcommerce
   class PurchaseCell < Cell::Rails
+    helper HbirdEcommerceHelper
+
     def new(args)
       @purchase = args[:purchase]
       @stem     = args[:stem]

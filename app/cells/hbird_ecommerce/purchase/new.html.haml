@@ -3,7 +3,7 @@
   %table{:border => 1}
     %tr
       %td Amount
-      %td= "$" + @purchase.amount.round(2).to_s
+      %td= as_currency(@purchase.amount)
     %tr
       %td Shipping Info
       %td= f.text_field :shipping_info

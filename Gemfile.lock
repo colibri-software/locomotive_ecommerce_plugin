@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    hbird_ecommerce (0.0.6)
+    hbird_ecommerce (0.0.8)
       cells
       haml
       locomotive_plugins (~> 1.0.0.beta10)
