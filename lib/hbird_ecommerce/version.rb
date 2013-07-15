@@ -1,3 +1,3 @@
 module HbirdEcommerce
-  VERSION = "0.0.8"
+  VERSION = "0.0.9ts"
 end

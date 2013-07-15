@@ -3,6 +3,7 @@ class TestController < ApplicationController
 
   def render_flash
     @flash_text = render_cell 'hbird_ecommerce/flash', :show, flash: flash 
+    @flash_text << render_cell('hbird_ecommerce/javascript', :show)
   end
 
   ###############

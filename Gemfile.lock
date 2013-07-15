@@ -18,7 +18,7 @@ PATH
 PATH
   remote: ../../stripe_helper
   specs:
-    stripe_helper (0.0.2)
+    stripe_helper (0.0.3)
       cells
       rails (~> 3.2.13)
       stripe

@@ -1,14 +1,19 @@
 -if @product
   %h1= @product.description
-  %ul
+  %div{class: 'product-container'}
+    %div{class: 'product-category'}
+      -if @product.category
+        =@product.category
     %div{class: 'product-image'}
+      -if @product.picture
+        =image_tag @product.picture
+    %div{class: 'product-quantity'}
+      Quantity:
+      =@product.quantity
     %div{class: 'price'}
       -if @product.price
         = as_currency(@product.price)
-      %div= button_to 'Add to Cart', @url.add_to_cart_path(@stem, @product),
+      = button_to 'Add to Cart', @url.add_to_cart_path(@stem, @product),
         :id => "addToCartButton", :method => :post
-    %div{class: 'product'}
-      -if @product.description
-        =@product.description
 -else
   Product not found.

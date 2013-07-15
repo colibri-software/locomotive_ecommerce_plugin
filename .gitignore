@@ -16,3 +16,5 @@
 
 # Ignore coverage
 coverage
+
+/spec/dummy/tmp/cache
