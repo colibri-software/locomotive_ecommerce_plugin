@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'haml'
   s.add_dependency 'cells'
   s.add_dependency 'stripe'
+  s.add_dependency 'kaminari'
 
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'database_cleaner'

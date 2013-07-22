@@ -7,7 +7,9 @@ module HbirdEcommerce
     end
 
     def do_products(params, path, controller)
+      page = params.delete('page')
       products = filter_products(inventory_items, params)
+      products = products.page(page)
       controller.render_cell 'hbird_ecommerce/product', :index,
         products: products, url: self, stem: path
     end
