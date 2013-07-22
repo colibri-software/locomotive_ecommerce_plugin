@@ -57,6 +57,7 @@ module HbirdEcommerce
       @args["product"] = context["params.p"] if context["params.p"]
       @args["vendor"]  = context["params.v"] if context["params.v"]
       @args["group"]   = context["params.g"] if context["params.g"]
+      @args["dcs"]     = context["params.c"] if context["params.c"]
       @plugin_obj.helper.do_products(@args, @plugin_obj.path,
                                      @plugin_obj.controller)
     end

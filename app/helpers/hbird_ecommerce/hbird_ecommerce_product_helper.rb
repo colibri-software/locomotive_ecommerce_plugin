@@ -20,7 +20,8 @@ module HbirdEcommerce
         'price'    => :product_price,
         'quantity' => :quantity,
         'vendor'   => :vendor,
-        'group'    => :group
+        'group'    => :group,
+        'dcs'      => :category
       }
 
       params.each do |k,v|
@@ -30,7 +31,9 @@ module HbirdEcommerce
         next if !whitelist.key? first
         field = whitelist[first].to_sym
         if last == nil
-          products = products.and(field => /#{Regexp.escape(v)}/i)
+          regex = /#{Regexp.escape(v)}/i
+          regex = /^#{Regexp.escape(v)}.*/i if field == :category
+          products = products.and(field => regex)
         elsif last == 'min'
           products = products.and(field.gt => v)
         elsif last == 'max'
