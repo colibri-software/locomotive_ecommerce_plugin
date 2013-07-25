@@ -5,7 +5,7 @@
       -if @product.category
         =@product.category
     %div{class: 'product-image'}
-      -if @product.picture
+      -if @product.picture && !@product.picture.empty?
         =image_tag @product.picture
     %div{class: 'product-quantity'}
       Quantity:

@@ -276,11 +276,13 @@ module HbirdEcommerce
         description: 'test desc',
         price:       '50.0',
         picture:     '',
-        id:          BSON::ObjectId.new
+        id:          BSON::ObjectId.new,
+        category:    'test cat'
       product.stub(:where).and_return(product)
       product.stub(:first).and_return(product)
       product.stub(:quantity).and_return(100)
       product.stub(:save!).and_return(true)
+      product.stub(:page).and_return(Kaminari.paginate_array([product]))
       TestController.any_instance.stub(:inventory_items).and_return(product)
       Order.stub(:product_class).and_return(product)
       Remote::Order.stub(:create).and_return(true)

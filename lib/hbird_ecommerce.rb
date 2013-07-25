@@ -5,6 +5,7 @@ require "hbird_ecommerce/engine"
 require 'hbird_ecommerce/ecommerce_drop'
 require 'hbird_ecommerce/ecommerce_tags'
 require 'cells'
+require 'kaminari'
 
 module HbirdEcommerce
   class PluginHelper

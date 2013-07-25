@@ -7,6 +7,7 @@
     %th Action
   -@products.each do |p|
     %tr
+      %td{class: 'thumbnail'}= !p.thumbnail || p.thumbnail.empty? ? '' : image_tag(p.thumbnail)
       %td{class: 'product'}= link_to p.description, @url.product_path(p)
       %td{class: 'price'}
         -if p.price
