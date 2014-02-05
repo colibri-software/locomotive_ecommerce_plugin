@@ -2,7 +2,7 @@ module HbirdEcommerce
   class Order
     include Mongoid::Document
     include Mongoid::Timestamps
-    field      :quantity,   :type => Integer, :default => 1 
+    field      :quantity,   :type => Integer, :default => 1
     field      :sku,        :type => String
     belongs_to :cart,       :class_name => "::HbirdEcommerce::Cart"
 
@@ -19,7 +19,7 @@ module HbirdEcommerce
     def quantity
       self[:quantity]
     end
-    
+
     def product_sku
       i = product
       i == nil ? '' : i.sku

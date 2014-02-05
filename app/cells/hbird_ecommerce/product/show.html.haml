@@ -1,19 +1,29 @@
 -if @product
   %h1= @product.description
   %div{class: 'product-container'}
-    %div{class: 'product-category'}
-      -if @product.category
-        =@product.category
-    %div{class: 'product-image'}
+    .product-info
+      %table
+        - %w(sku quantity price category colors gender group materials size upc vendor).each do |field|
+          -if @product.respond_to?(field.to_sym) && @product.send(field.to_sym)
+            -if @product.send(field.to_sym).respond_to?(:empty?) && !@product.send(field.to_sym).empty? || !@product.send(field.to_sym).respond_to?(:empty?)
+              %tr
+                %td= field.titleize
+                -if field == "price"
+                  %td= as_currency(@product.send(field.to_sym))
+                -else
+                  %td= @product.send(field.to_sym)
+    .product-image
       -if @product.picture && !@product.picture.empty?
-        =image_tag @product.picture
-    %div{class: 'product-quantity'}
-      Quantity:
-      =@product.quantity
-    %div{class: 'price'}
-      -if @product.price
-        = as_currency(@product.price)
+        %img{src: @product.picture}
+      -elsif @product.photos && @product.photos.count > 0
+        %img{src: @product.photos.first}
+    .clear
+    .add_to_cart
       = button_to 'Add to Cart', @url.add_to_cart_path(@stem, @product),
         :id => "addToCartButton", :method => :post
 -else
   Product not found.
+
+
+
+
