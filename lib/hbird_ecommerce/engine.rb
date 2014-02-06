@@ -14,7 +14,7 @@ module HbirdEcommerce
 
     def self.config_or_default(key)
       msg = config_hash[key]
-      return msg if msg && !msg.empty?
+      return msg if msg && msg.class == String ? !msg.empty? : true
 
       return '/cart'         if key == 'cart_url'
       return '/checkout'     if key == 'checkout_url'

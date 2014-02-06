@@ -3,7 +3,7 @@
   %div{class: 'product-container'}
     .product-info
       %table
-        - %w(sku quantity price category colors gender group materials size upc vendor).each do |field|
+        - %w(sku quantity price category colors gender group materials size upc vendor dcs).each do |field|
           -if @product.respond_to?(field.to_sym) && @product.send(field.to_sym)
             -if @product.send(field.to_sym).respond_to?(:empty?) && !@product.send(field.to_sym).empty? || !@product.send(field.to_sym).respond_to?(:empty?)
               %tr
