@@ -9,8 +9,8 @@
     %tr
       -if p.thumbnail && !p.thumbnail.empty?
         %td{class: 'thumbnail'}= image_tag(p.thumbnail)
-      -elsif p.photos && p.photos.count > 0
-        %td{class: 'thumbnail'}= image_tag(p.photos.first)
+      -elsif p.picture
+        %td{class: 'thumbnail'}= image_tag(p.picture)
       -else
         %td{class: 'thumbnail'}
       %td{class: 'product'}= link_to p.description, @url.product_path(p)
