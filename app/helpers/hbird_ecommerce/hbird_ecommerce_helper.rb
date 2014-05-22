@@ -9,7 +9,7 @@ module HbirdEcommerce
     # User
     def current_user(controller)
       if controller.session[:user_id]
-        @current_user ||= IdentityEngine::User.find(controller.session[:user_id])
+        @current_user ||= IdentityPlugin::User.find(controller.session[:user_id])
       end
     end
 
