@@ -1,7 +1,7 @@
 %h1 Products
 = paginate @products
 %table{:border => 1, class: 'products'}
-  %tr 
+  %tr
     %th Product
     %th Price
     %th Action
@@ -11,6 +11,8 @@
         %td{class: 'thumbnail'}= image_tag(p.thumbnail)
       -elsif p.picture && !p.picture.empty?
         %td{class: 'thumbnail'}= image_tag(p.picture)
+      -elsif p.photos && p.photos.count > 0
+        %td{class: 'thumbnail'}= image_tag(p.photos.first)
       -else
         %td{class: 'thumbnail'}
       %td{class: 'product'}= link_to p.description, @url.product_path(p)
