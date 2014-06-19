@@ -4,6 +4,7 @@ require 'locomotive_plugins'
 require "hbird_ecommerce/engine"
 require 'hbird_ecommerce/ecommerce_drop'
 require 'hbird_ecommerce/ecommerce_tags'
+require 'hbird_ecommerce/inventory_interface'
 require 'cells'
 require 'kaminari'
 
@@ -13,6 +14,7 @@ module HbirdEcommerce
 
   class HbirdEcommerce
     include Locomotive::Plugin
+    include ::HbirdEcommerce::InventoryInterface
 
     before_page_render :set_config
 
@@ -33,8 +35,6 @@ module HbirdEcommerce
         cart:         CartTag,
         checkout:     CheckoutTag,
         new_checkout: NewCheckoutTag,
-        product:      ProductTag,
-        products:     ProductsTag,
         purchases:    PurchasesTag,
         javascript:   JavascriptTag,
         flash:        FlashTag
@@ -52,6 +52,7 @@ module HbirdEcommerce
     def path
       rack_app_full_path('/')
     end
+
 
     private
     def set_config

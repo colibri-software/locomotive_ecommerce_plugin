@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 3.2.13"
   s.add_dependency 'locomotive_plugins',    '~> 1.0.0.beta10'
+  s.add_dependency 'stripe_helper'
   s.add_dependency 'haml'
   s.add_dependency 'cells'
   s.add_dependency 'stripe'

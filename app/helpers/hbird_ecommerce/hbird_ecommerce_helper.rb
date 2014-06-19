@@ -1,3 +1,5 @@
+require 'hbird_ecommerce/inventory_interface'
+
 module HbirdEcommerce
   module HbirdEcommerceHelper
     include ::HbirdEcommerce::HbirdEcommerceCartHelper
@@ -5,20 +7,12 @@ module HbirdEcommerce
     include ::HbirdEcommerce::HbirdEcommerceProductHelper
     include ::HbirdEcommerce::HbirdEcommercePurchaseHelper
     include ::HbirdEcommerce::HbirdEcommerceUrlHelper
+    include ::HbirdEcommerce::InventoryInterface
 
     # User
     def current_user(controller)
       if controller.session[:user_id]
         @current_user ||= IdentityPlugin::User.find(controller.session[:user_id])
-      end
-    end
-
-    # Inventory
-    def inventory_items
-      if Engine.config_or_default('with_quantity')
-        HbirdInventory::InventoryUpdate.stable.inventory_items.where(:quantity.gt => 0)
-      else
-        HbirdInventory::InventoryUpdate.stable.inventory_items
       end
     end
 
