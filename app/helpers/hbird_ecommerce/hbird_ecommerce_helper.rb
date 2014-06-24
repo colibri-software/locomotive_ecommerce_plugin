@@ -3,9 +3,6 @@ require 'hbird_ecommerce/inventory_interface'
 module HbirdEcommerce
   module HbirdEcommerceHelper
     include ::HbirdEcommerce::HbirdEcommerceCartHelper
-    include ::HbirdEcommerce::HbirdEcommerceOrderHelper
-    include ::HbirdEcommerce::HbirdEcommerceProductHelper
-    include ::HbirdEcommerce::HbirdEcommercePurchaseHelper
     include ::HbirdEcommerce::HbirdEcommerceUrlHelper
     include ::HbirdEcommerce::InventoryInterface
 
