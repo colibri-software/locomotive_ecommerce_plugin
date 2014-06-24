@@ -15,6 +15,20 @@ module HbirdEcommerce
       search_filter(source.inventory_items)
     end
 
+    def flash
+      @context.registers[:controller].flash
+    end
+
+    def cart
+      unless @cart
+        session = @context.registers[:controller].session
+        user = IdentityPlugin::User.find(session[:user_id])
+        id = user == nil ? nil : user.id
+        @cart = Cart.find_or_create(id, session)
+      end
+      @cart
+    end
+
     protected
     attr_reader :source
 

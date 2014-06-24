@@ -46,8 +46,16 @@ module HbirdEcommerce
       i.save!
     end
 
+    def price
+      quantity * product_price
+    end
+
     def out_of_stock?
       quantity > product_quantity
+    end
+
+    def to_liquid
+      OrderDrop.new(self)
     end
 
     def self.id_to_sku(id)
@@ -63,5 +71,19 @@ module HbirdEcommerce
     def self.product_class
       HbirdInventory::InventoryItem
     end
+  end
+  class OrderDrop < ::Liquid::Drop
+    def initialize(source)
+      @source = source
+    end
+
+    def id
+      @source.id.to_s
+    end
+
+    delegate :product, :price, :out_of_stock?, :quantity, :cart, to: :@source
+
+    protected
+    attr_accessor :source
   end
 end

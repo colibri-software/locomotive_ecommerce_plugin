@@ -26,12 +26,20 @@ module HbirdEcommerce
       order.destroy if order
     end
 
-    def get_total
+    def purchase_total
       total = 0
-      orders.each { |order| total += order.quantity * order.product_price }
+      orders.each { |order| total += order.price }
       return total
     end
-    
+
+    def estimated_tax
+      purchase_total * ((Engine.config_or_default('estimated_tax_rate').to_f/100))
+    end
+
+    def subtotal_est_tax
+      purchase_total + estimated_tax
+    end
+
     def update_from_params(params)
       to_update = Order.find(params[:order_ids])
       count = 0
@@ -53,6 +61,10 @@ module HbirdEcommerce
     def valid_stock?
       orders.each { |order| return false if order.out_of_stock? }
       return true
+    end
+
+    def to_liquid
+      CartDrop.new(self)
     end
 
     # self methods
@@ -80,11 +92,30 @@ module HbirdEcommerce
       end
 
       return Cart.for_user(id) if id != nil
-        
+
       cart = create
       cart.save!
       session[:cart_id] = cart.id.to_s
       return cart
     end
+  end
+
+  class CartDrop < ::Liquid::Drop
+    def initialize(source)
+      @source = source
+    end
+
+    def line_items
+      @source.orders
+    end
+
+    def id
+      @source.id.to_s
+    end
+
+    delegate :valid_stock?, :purchase_total, :estimated_tax, :subtotal_est_tax, to: :@source
+
+    protected
+    attr_accessor :source
   end
 end
