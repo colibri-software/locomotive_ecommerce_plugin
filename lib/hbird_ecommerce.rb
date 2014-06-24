@@ -4,6 +4,7 @@ require 'locomotive_plugins'
 require "hbird_ecommerce/engine"
 require 'hbird_ecommerce/ecommerce_drop'
 require 'hbird_ecommerce/ecommerce_tags'
+require 'hbird_ecommerce/ecommerce_filters'
 require 'hbird_ecommerce/inventory_interface'
 require 'cells'
 require 'kaminari'
@@ -32,13 +33,13 @@ module HbirdEcommerce
 
     def self.liquid_tags
       {
-        cart:         CartTag,
-        checkout:     CheckoutTag,
-        new_checkout: NewCheckoutTag,
-        purchases:    PurchasesTag,
-        javascript:   JavascriptTag,
-        flash:        FlashTag
+        stripe:   StripeTag,
+        flash:    FlashTag
       }
+    end
+
+    def self.liquid_filters
+      HbirdEcommerceFilters
     end
 
     def helper

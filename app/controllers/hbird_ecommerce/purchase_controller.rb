@@ -5,13 +5,10 @@ module HbirdEcommerce
     before_filter :authenticate_user!, except: [:do_new_purchase]
 
     def create
-      @purchase = Purchase.new(params[:purchase])
-      @purchase.amount = current_user_cart(self).get_total
-      if params[:tos] != "yes"
-        flash[:error] = 'To complete the purchase, please agree ' +
-          'to the terms of service.'
-      elsif @purchase.save
-        redirect_to checkout_path(@purchase)
+      @purchase = current_user_cart(self).purchase
+      @purchase.shipping_info = params[:shipping_info]
+      if @purchase.save
+        redirect_to confirm_order_path
         return
       elsif @purchase.errors.any?
         flash_ar = []
@@ -19,24 +16,26 @@ module HbirdEcommerce
         flash[:error] = flash_ar.join(', ')
       end
 
-      redirect_to new_checkout_path
+      redirect_to checkout_path
     end
 
     def self.complete(purchase_id, user, cart, stripeToken)
       @purchase = Purchase.where(_id: purchase_id).first
-      @purchase.cart = cart
-      @purchase.cart.user_id = nil
-      @purchase.stripe_token = stripeToken
-      @purchase.complete
 
+      #Reset user cart
+      @purchase.cart.user_id = nil
+      @purchase.cart.save!
       new_cart = Cart.create
       new_cart.user_id = user.id
       new_cart.save!
 
-      @purchase.cart.save!
+      #complete purchase
+      @purchase.stripe_token = stripeToken
+      @purchase.complete
       @purchase.completed = true
       @purchase.user_id = user.id
       @purchase.save!
+
       send_purchase(@purchase)
     end
 
@@ -52,18 +51,21 @@ module HbirdEcommerce
     end
 
     private
-    def self.send_purchase(send)
+
+    def self.send_purchase(purchase)
       summary = {}
-      send.cart.orders.each do |order|
+      purchase.cart.orders.each do |order|
         summary[order.product_sku] = order.quantity
       end
+      puts "---------------------------"
+      puts purchase.shipping_info
+      puts "---------------------------"
       Remote::Order.create(
-        shipping_info: send.shipping_info,
-        billing_info:  send.billing_info,
+        shipping_info: purchase.shipping_info,
         summary:       summary
       )
-      send.transmitted = true
-      send.save!
+      purchase.transmitted = true
+      purchase.save!
     end
   end
 end

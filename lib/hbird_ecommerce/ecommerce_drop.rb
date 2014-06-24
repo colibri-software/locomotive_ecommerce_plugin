@@ -29,6 +29,20 @@ module HbirdEcommerce
       @cart
     end
 
+    def purchase
+      unless @purchase
+        session = @context.registers[:controller].session
+        user = IdentityPlugin::User.find(session[:user_id])
+        puts "Count in Drop 1: #{Purchase.count}"
+        @purchase = cart.purchase || Purchase.new
+        cart.purchase = @purchase
+        cart.save!
+        @purchase.save!
+        puts "Count in Drop 2: #{Purchase.count}"
+      end
+      @purchase
+    end
+
     protected
     attr_reader :source
 

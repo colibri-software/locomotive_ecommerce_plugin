@@ -5,45 +5,22 @@ module HbirdEcommerce
     end
   end
 
-  class CartTag < Liquid::Tag
+  class StripeTag < Liquid::Tag
     include HbirdEcommerceTagHelper
     def render(context)
       super
-      @plugin_obj.helper.do_cart(@plugin_obj.path, @plugin_obj.controller)
-    end
-  end
-
-  class CheckoutTag < Liquid::Tag
-    include HbirdEcommerceTagHelper 
-    def render(context)
-      super
-      @plugin_obj.helper.do_purchase(context["params.p"], @plugin_obj.path,
-                                     @plugin_obj.controller)
-    end
-  end
-
-  class NewCheckoutTag < Liquid::Tag
-    include HbirdEcommerceTagHelper 
-    def render(context)
-      super
-      @plugin_obj.helper.do_purchase_new(@plugin_obj.path, @plugin_obj.controller)
-    end
-  end
-
-  class PurchasesTag < Liquid::Tag 
-    include HbirdEcommerceTagHelper 
-    def render(context)
-      super
-      @plugin_obj.helper.do_purchases(@plugin_obj.controller)
-    end
-  end
-
-  # Non-page tags
-  class JavascriptTag < Liquid::Tag
-    include HbirdEcommerceTagHelper 
-    def render(context)
-      super
-      @plugin_obj.controller.render_cell 'hbird_ecommerce/javascript', :show
+      session = context.registers[:controller].session
+      user = IdentityPlugin::User.find(session[:user_id])
+      id = user == nil ? nil : user.id
+      cart = Cart.find_or_create(id, session)
+      @purchase = cart.purchase
+      context.registers[:controller].render_cell 'stripe_helper/stripe', :show,
+        amount: (@purchase.total.round(2) * 100).to_i,
+        desc:   Date.today,
+        pk:     StripeHelper.config.public_key,
+        stem:   @plugin_obj.path,
+        store:  'The Trail Shop',
+        token:  @purchase.id
     end
   end
 

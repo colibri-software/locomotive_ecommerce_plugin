@@ -12,8 +12,7 @@ module HbirdEcommerce
     amt_proc = lambda do |controller, token|
       purchase = Purchase.where(_id: token).first
       return nil if !purchase
-      amt_check = helper.current_user_cart(controller).get_total
-      purchase.amount == amt_check ? (amt_check.round(2)*100).to_i : nil
+      (purchase.total.round(2)*100).to_i
     end
 
     failure_proc = lambda do |controller, token, msg|
