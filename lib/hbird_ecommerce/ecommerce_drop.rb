@@ -43,6 +43,12 @@ module HbirdEcommerce
       @purchase
     end
 
+    def purchases
+      session = @context.registers[:controller].session
+      user = IdentityPlugin::User.find(session[:user_id])
+      Purchase.where(user_id: user.id).all.to_a
+    end
+
     protected
     attr_reader :source
 

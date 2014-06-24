@@ -50,6 +50,10 @@ module HbirdEcommerce
       @source.id.to_s
     end
 
+    def date
+      @source.updated_at
+    end
+
     delegate :cart, :complete, :stripe_token, :completed,
       :subtotal_est_tax, :shipping_estimate, :subtotal_est_shipping,
       :shipping, :tax, :total, :shipping_info, to: :@source

@@ -25,5 +25,9 @@ module HbirdEcommerce
       stem = @context.registers[:plugin_object].path
       "#{stem}checkout/#{purchase.id}"
     end
+
+    def find_purchase(id)
+      Purchase.find(id.to_s)
+    end
   end
 end
