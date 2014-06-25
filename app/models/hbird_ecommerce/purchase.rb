@@ -28,7 +28,42 @@ module HbirdEcommerce
     end
 
     def tax
-      0.0
+      if precent = tax_precentage
+        cart.purchase_total * (precent.to_f/100)
+      else
+        -1
+      end
+    end
+
+    def tax_precentage
+      unless @tax_precentage
+        ct = Thread.current[:site].content_types.where(slug: Engine.config_or_default('tax_model')).first
+        if ct
+          query_hash = {}
+          country_field = Engine.config_or_default('country_slug').to_sym
+          province_field = Engine.config_or_default('province_slug').to_sym
+          precentage_field = Engine.config_or_default('precentage_slug').to_sym
+          query_hash[country_field] = /#{shipping_info[country_field.to_s]}/i
+          query = ct.entries.where(query_hash)
+          if query.count == 1
+            @tax_precentage = query.first.send(precentage_field)
+          elsif query.count > 0
+            query_hash = {}
+            query_hash[province_field] = /#{shipping_info[province_field.to_s]}/i
+            query = query.and(query_hash)
+            if query.count > 0
+              @tax_precentage = query.first.send(precentage_field)
+            else
+              @tax_precentage = nil
+            end
+          else
+            @tax_precentage = nil
+          end
+        else
+          @tax_precentage = nil
+        end
+      end
+      @tax_precentage
     end
 
     def shipping
@@ -36,7 +71,11 @@ module HbirdEcommerce
     end
 
     def total
-      cart.purchase_total + tax + shipping
+      if tax >= 0
+        cart.purchase_total + tax + shipping
+      else
+        cart.purchase_total + shipping
+      end
     end
 
   end
@@ -56,7 +95,7 @@ module HbirdEcommerce
 
     delegate :cart, :complete, :stripe_token, :completed,
       :subtotal_est_tax, :shipping_estimate, :subtotal_est_shipping,
-      :shipping, :tax, :total, :shipping_info, to: :@source
+      :shipping, :tax, :tax_precentage, :total, :shipping_info, to: :@source
 
     def method_missing(meth, *args, &block)
       if @source.shipping_info.key?(meth)

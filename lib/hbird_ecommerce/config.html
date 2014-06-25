@@ -38,6 +38,27 @@
   <p class="inline-hints">Default: 15</p>
 </li>
 <li>
+  <label name="tax_model">Tax Model:</label>
+  <select name="tax_model">
+    {{#each content_types}}
+    <option value="{{ this.slug }}">{{ this.name }}</option>
+    {{/each}}
+  </select>
+  <p class="inline-hints">Slug of the model recording tax rates.</p>
+</li>
+<li>
+  <label name="country_slug">Country Code Slug:</label>
+  <input type="text" name="country_slug" />
+</li>
+<li>
+  <label name="province_slug">Province/State Code Slug:</label>
+  <input type="text" name="province_slug" />
+</li>
+<li>
+  <label name="precentage_slug">Precentage Slug:</label>
+  <input type="text" name="precentage_slug" />
+</li>
+<li>
   <label name="shop_name">Shop Name</label>
   <input type="text" name="shop_name" />
 </li>

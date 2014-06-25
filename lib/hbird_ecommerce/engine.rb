@@ -20,6 +20,10 @@ module HbirdEcommerce
         'confirm_order_url' => '/confirm',
         'purchases_url' => '/purchases',
         'estimated_tax_rate' => '15',
+        'tax_model' => nil,
+        'country_slug' => 'country',
+        'province_slug' => 'province',
+        'precentage_slug' => 'precentage',
         'shop_name' => "<insert name>",
         'contact' => "fake@email.com"
       }
