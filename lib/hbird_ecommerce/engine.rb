@@ -16,10 +16,8 @@ module HbirdEcommerce
       defaults = {
         'cart_url' => '/cart',
         'checkout_url' => '/checkout',
-        'new_checkout_url' => '/checkout_new',
+        'post_checkout_url' => '/complete',
         'confirm_order_url' => '/confirm',
-        'product_url' => '/product',
-        'products_url' => '/products',
         'purchases_url' => '/purchases',
         'estimated_tax_rate' => '15',
       }

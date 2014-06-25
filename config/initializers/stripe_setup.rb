@@ -18,7 +18,7 @@ module HbirdEcommerce
     failure_proc = lambda do |controller, token, msg|
       purchase = Purchase.where(_id: token).first
       controller.flash[:error] = msg
-      helper.checkout_path(purchase)
+      helper.checkout_path
     end
 
     success_proc = lambda do |controller, token, stripe|
@@ -28,7 +28,7 @@ module HbirdEcommerce
                                   helper.current_user_cart(controller),
                                   stripe)
       controller.flash[:notice] = "Thank you for your purchase."
-      helper.checkout_path(purchase)
+      helper.post_checkout_path
     end
 
     config.charge_amount  = amt_proc

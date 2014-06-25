@@ -15,12 +15,12 @@ module HbirdEcommerce
       Engine.config_or_default('confirm_order_url')
     end
 
-    def product_path(product)
-      "#{Engine.config_or_default('product_url')}?p=#{product.id}"
+    def purchases_path
+      Engine.config_or_default('purchases_url')
     end
 
-    def products_path
-      Engine.config_or_default('products_url')
+    def post_checkout_path
+      Engine.config_or_default('post_checkout_url')
     end
 
     ###########################
