@@ -1,0 +1,11 @@
+Hello,
+
+Thank you for placing an order at <%= @shop_name %>.
+
+Here is a summary of the order you placed:
+
+Qty.          Product<% for item in @purchase.cart.orders %>
+<%= item.quantity%>          <%= item.product.description %>
+<% end%>
+
+If you have any questions please contact <%= @contact %>

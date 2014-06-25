@@ -30,18 +30,18 @@ module HbirdEcommerce
       new_cart.save!
 
       #complete purchase
-      send_purchase(@purchase)
       purchase.stripe_token = stripeToken
       purchase.complete
       purchase.completed = true
       purchase.user_id = user.id
       purchase.save!
 
+      send_purchase(purchase, user)
     end
 
     private
 
-    def self.send_purchase(purchase)
+    def self.send_purchase(purchase, user)
       summary = {}
       purchase.cart.orders.each do |order|
         summary[order.product_sku] = order.quantity
@@ -50,6 +50,7 @@ module HbirdEcommerce
         shipping_info: purchase.shipping_info,
         summary:       summary
       )
+      PurchaseMailer.purchase_confirmation(user, purchase).deliver
       purchase.transmitted = true
       purchase.save!
     end

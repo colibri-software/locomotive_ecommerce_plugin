@@ -20,6 +20,8 @@ module HbirdEcommerce
         'confirm_order_url' => '/confirm',
         'purchases_url' => '/purchases',
         'estimated_tax_rate' => '15',
+        'shop_name' => "<insert name>",
+        'contact' => "fake@email.com"
       }
       hash = defaults.merge(config_hash)
       hash[key]
