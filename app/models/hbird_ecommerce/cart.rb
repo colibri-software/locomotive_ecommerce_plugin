@@ -113,7 +113,11 @@ module HbirdEcommerce
       @source.id.to_s
     end
 
-    delegate :valid_stock?, :purchase_total, :estimated_tax, :subtotal_est_tax, to: :@source
+    [:purchase_total, :estimated_tax, :subtotal_est_tax].each do |method|
+      define_method(method) {@source.send(method).round(2)}
+    end
+
+    delegate :valid_stock?, to: :@source
 
     protected
     attr_accessor :source
