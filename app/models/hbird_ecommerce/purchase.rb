@@ -2,7 +2,7 @@ module HbirdEcommerce
   class Purchase
     include Mongoid::Document
     include Mongoid::Timestamps
-    field   :shipping_info, :type => Hash
+    field   :shipping_info, :type => Hash, :default => {}
     field   :completed,     :type => Boolean, :default => false
     field   :user_id,       :type => ::BSON::ObjectId
     field   :transmitted,   :type => Boolean, :default => false
