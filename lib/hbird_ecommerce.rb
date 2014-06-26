@@ -58,7 +58,8 @@ module HbirdEcommerce
     private
     def set_config
       mounted_rack_app.config_hash = config
-      Remote::Order.site = Engine.config_or_default('app_url')
+      Remote::Order.site      = Engine.config_or_default('app_url')
+      Remote::Order.api_token = Engine.config_or_default('api_token')
 
       ::Stripe.api_key = mounted_rack_app.config_or_default('stripe_secret')
       ::StripeHelper.configure do |config|

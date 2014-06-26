@@ -22,7 +22,7 @@ module HbirdEcommerce
     def cart
       unless @cart
         session = @context.registers[:controller].session
-        user = IdentityPlugin::User.find(session[:user_id])
+        user = IdentityPlugin::User.where(id: session[:user_id]).first
         id = user == nil ? nil : user.id
         @cart = Cart.find_or_create(id, session)
       end
@@ -32,7 +32,7 @@ module HbirdEcommerce
     def purchase
       unless @purchase
         session = @context.registers[:controller].session
-        user = IdentityPlugin::User.find(session[:user_id])
+        user = IdentityPlugin::User.where(id: session[:user_id]).first
         puts "Count in Drop 1: #{Purchase.count}"
         @purchase = cart.purchase || Purchase.new
         cart.purchase = @purchase
@@ -45,7 +45,7 @@ module HbirdEcommerce
 
     def purchases
       session = @context.registers[:controller].session
-      user = IdentityPlugin::User.find(session[:user_id])
+      user = IdentityPlugin::User.where(id: session[:user_id]).first
       Purchase.where(user_id: user.id).all.to_a
     end
 
