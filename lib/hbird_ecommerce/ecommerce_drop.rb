@@ -16,7 +16,7 @@ module HbirdEcommerce
     end
 
     def flash
-      @context.registers[:controller].flash
+      @context.registers[:controller].flash.to_hash
     end
 
     def cart
