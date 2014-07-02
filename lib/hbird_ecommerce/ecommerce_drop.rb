@@ -16,7 +16,7 @@ module HbirdEcommerce
     end
 
     def flash
-      @context.registers[:controller].flash.to_hash
+      @context.registers[:controller].flash.to_hash.stringify_keys
     end
 
     def cart
