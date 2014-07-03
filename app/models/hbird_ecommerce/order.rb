@@ -82,7 +82,7 @@ module HbirdEcommerce
     end
 
     def price
-      @source.price.round(2)
+      "%0.2f" % @source.price.round(2)
     end
 
     delegate :product, :out_of_stock?, :quantity, :cart, to: :@source

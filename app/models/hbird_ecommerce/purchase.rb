@@ -95,7 +95,7 @@ module HbirdEcommerce
 
     [:subtotal_est_tax, :shipping_estimate, :subtotal_est_shipping,
       :shipping, :tax, :tax_precentage, :total].each do |method|
-      define_method(method) {@source.send(method).round(2)}
+      define_method(method) {"%0.2f" % @source.send(method).round(2)}
       end
 
     delegate :cart, :complete, :stripe_token, :completed, :shipping_info, to: :@source

@@ -114,7 +114,7 @@ module HbirdEcommerce
     end
 
     [:purchase_total, :estimated_tax, :subtotal_est_tax].each do |method|
-      define_method(method) {@source.send(method).round(2)}
+      define_method(method) {"%0.2f" % @source.send(method).round(2)}
     end
 
     delegate :valid_stock?, to: :@source
