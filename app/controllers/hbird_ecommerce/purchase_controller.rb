@@ -7,6 +7,7 @@ module HbirdEcommerce
     def create
       @purchase = current_user_cart(self).purchase
       @purchase.shipping_info = params[:shipping_info]
+      @purchase.shipping_method = params[:shipping_method]
       if @purchase.save
         redirect_to confirm_order_path
         return

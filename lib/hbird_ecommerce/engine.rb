@@ -23,6 +23,10 @@ module HbirdEcommerce
         'country_slug' => 'country',
         'province_slug' => 'province',
         'precentage_slug' => 'precentage',
+        'shipping_name_slug' => 'name',
+        'shipping_over_slug' => 'over',
+        'shipping_under_slug' => 'under',
+        'price_break' => '100',
         'shop_name' => "<insert name>",
         'contact' => "fake@email.com"
       }

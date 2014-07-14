@@ -2,12 +2,13 @@ module HbirdEcommerce
   class Purchase
     include Mongoid::Document
     include Mongoid::Timestamps
-    field   :shipping_info, :type => Hash, :default => {}
-    field   :completed,     :type => Boolean, :default => false
-    field   :user_id,       :type => ::BSON::ObjectId
-    field   :transmitted,   :type => Boolean, :default => false
-    field   :stripe_token,  :type => String
-    has_one :cart,          :class_name => "::HbirdEcommerce::Cart"
+    field   :shipping_info,   :type => Hash, :default => {}
+    field   :shipping_method, :type => String
+    field   :completed,       :type => Boolean, :default => false
+    field   :user_id,         :type => ::BSON::ObjectId
+    field   :transmitted,     :type => Boolean, :default => false
+    field   :stripe_token,    :type => String
+    has_one :cart,            :class_name => "::HbirdEcommerce::Cart"
 
     def complete
       cart.orders.each { |order| order.product_quantity -= order.quantity }
@@ -67,7 +68,23 @@ module HbirdEcommerce
     end
 
     def shipping
-      0.0
+      unless @shipping
+        @shipping = 0.0
+        ct = Thread.current[:site].content_types.where(slug: Engine.config_or_default('shipping_model')).first
+        price_break = Engine.config_or_default('price_break').to_f
+        name_field = Engine.config_or_default('shipping_name_slug').to_sym
+        over_field = Engine.config_or_default('shipping_over_slug').to_sym
+        under_field = Engine.config_or_default('shipping_under_slug').to_sym
+        query_hash = {}
+        query_hash[name_field] = self.shipping_method
+        method = ct.entries.where(query_hash).first
+        if self.cart.purchase_total > price_break
+          @shipping = method.send(over_field).to_f
+        else
+          @shipping = method.send(under_field).to_f
+        end
+      end
+      @shipping
     end
 
     def total
@@ -95,6 +112,7 @@ module HbirdEcommerce
 
     [:subtotal_est_tax, :shipping_estimate, :subtotal_est_shipping,
       :shipping, :tax, :tax_precentage, :total].each do |method|
+      define_method("#{method.to_s}_value".to_sym) {@source.send(method).round(2)}
       define_method(method) {"%0.2f" % @source.send(method).round(2)}
       end
 
