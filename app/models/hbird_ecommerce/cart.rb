@@ -19,8 +19,7 @@ module HbirdEcommerce
       return order
     end
 
-    def remove_product_by_id(product_id)
-      sku = Order.id_to_sku(product_id)
+    def remove_product_by_sku(sku)
       order = orders.where(:sku => sku)
       order.destroy if order
     end

@@ -11,9 +11,9 @@ module HbirdEcommerce
       "#{stem}add_to_cart/#{product.id}"
     end
 
-    def remove_from_cart_path(product)
+    def remove_from_cart_path(product_sku)
       stem = @context.registers[:plugin_object].path
-      "#{stem}remove_from_cart/#{product.id}"
+      "#{stem}remove_from_cart/#{product_sku}"
     end
 
     def checkout_path(purchase)
