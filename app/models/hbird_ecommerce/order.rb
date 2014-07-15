@@ -20,14 +20,9 @@ module HbirdEcommerce
       self[:quantity]
     end
 
-    def product_sku
-      i = product
-      i == nil ? '' : i.sku
-    end
-
     def product_price
       i = product
-      i == nil ? 0 : i.price.to_f
+      i == nil ? 0 : i.price(sku).to_f
     end
 
     def product_name
@@ -64,7 +59,15 @@ module HbirdEcommerce
     end
 
     def product
-      self.class.product_class.where(:sku => sku).first
+      self.class.product_class.find_by_sku(sku)
+    end
+
+    def size
+      product.size(sku)
+    end
+
+    def color
+      product.color(sku)
     end
 
     private
@@ -85,7 +88,7 @@ module HbirdEcommerce
       "%0.2f" % @source.price.round(2)
     end
 
-    delegate :product, :out_of_stock?, :quantity, :cart, to: :@source
+    delegate :size, :color, :sku, :product, :out_of_stock?, :quantity, :cart, to: :@source
 
     protected
     attr_accessor :source

@@ -5,8 +5,7 @@ module HbirdEcommerce
     belongs_to :purchase,    :class_name => "::HbirdEcommerce::Purchase"
     has_many   :orders,      :class_name => "::HbirdEcommerce::Order"
 
-    def add_product_by_id(product_id)
-      sku = Order.id_to_sku(product_id)
+    def add_product_by_sku(sku)
       already_existing_order = orders.where(:sku => sku)
       if already_existing_order.count > 0
         order = already_existing_order.first
