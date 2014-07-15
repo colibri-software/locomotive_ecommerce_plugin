@@ -21,7 +21,18 @@ module HbirdEcommerce
     delegate :subtotal_est_tax, to: :cart
 
     def shipping_estimate
-      0.0
+      unless @shipping_estimate
+        @shipping_estimate = 0.0
+        ct = Thread.current[:site].content_types.where(slug: Engine.config_or_default('shipping_model')).first
+        over_field = Engine.config_or_default('shipping_over_slug').to_sym
+        under_field = Engine.config_or_default('shipping_under_slug').to_sym
+        method = ct.ordered_entries.first
+        if self.cart.purchase_total > price_break
+          @shipping_estimate = method.send(over_field).to_f
+        else
+          @shipping_estimate = method.send(under_field).to_f
+        end
+      end
     end
 
     def subtotal_est_shipping
