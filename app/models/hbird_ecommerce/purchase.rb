@@ -24,6 +24,7 @@ module HbirdEcommerce
       unless @shipping_estimate
         @shipping_estimate = 0.0
         ct = Thread.current[:site].content_types.where(slug: Engine.config_or_default('shipping_model')).first
+        price_break = Engine.config_or_default('price_break').to_f
         over_field = Engine.config_or_default('shipping_over_slug').to_sym
         under_field = Engine.config_or_default('shipping_under_slug').to_sym
         method = ct.ordered_entries.first
@@ -33,6 +34,7 @@ module HbirdEcommerce
           @shipping_estimate = method.send(under_field).to_f
         end
       end
+      @shipping_estimate
     end
 
     def subtotal_est_shipping
