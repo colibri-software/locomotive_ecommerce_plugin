@@ -15,6 +15,10 @@ module HbirdEcommerce
       search_filter(source.inventory_items)
     end
 
+    def show_out_of_stock?
+      !!Engine.config_or_default('with_quantity')
+    end
+
     def flash
       @context.registers[:controller].flash.to_hash.stringify_keys
     end
