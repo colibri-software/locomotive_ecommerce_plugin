@@ -32,12 +32,12 @@ module HbirdEcommerce
 
     def product_quantity
       i = product
-      i == nil ? 0 : i.quantity
+      i == nil ? 0 : i.quantity(sku)
     end
 
     def product_quantity=(value)
       i = product
-      i.quantity = value
+      i.set_quantity(value, sku)
       i.save!
     end
 
@@ -88,7 +88,8 @@ module HbirdEcommerce
       "%0.2f" % @source.price.round(2)
     end
 
-    delegate :size, :color, :sku, :product, :out_of_stock?, :quantity, :cart, to: :@source
+    delegate :size, :color, :sku, :product, :out_of_stock?, :quantity,
+      :product_quantity, :cart, to: :@source
 
     protected
     attr_accessor :source
