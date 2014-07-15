@@ -13,7 +13,7 @@ module HbirdEcommerce
       else
         order = Order.new
         order.sku = sku
-        order.cart = self  
+        order.cart = self
       end
       order.save!
       return order
