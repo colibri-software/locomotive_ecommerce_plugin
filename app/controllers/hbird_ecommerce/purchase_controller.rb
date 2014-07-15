@@ -45,7 +45,7 @@ module HbirdEcommerce
     def self.send_purchase(purchase, user)
       summary = {}
       purchase.cart.orders.each do |order|
-        summary[order.product_sku] = order.quantity
+        summary[order.sku] = order.quantity
       end
       Remote::Order.create(
         shipping_info: purchase.shipping_info,
