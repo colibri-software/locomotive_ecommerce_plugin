@@ -13,7 +13,7 @@ module HbirdEcommerce
         return false
       end
       self[:quantity] = new_quantity
-      cart.remove_product_by_id(product.id) if new_quantity < 1
+      cart.remove_product_by_sku(sku) if new_quantity < 1
     end
 
     def quantity

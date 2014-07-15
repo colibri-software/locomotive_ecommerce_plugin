@@ -51,8 +51,8 @@ module HbirdEcommerce
     # merge in contents of another cart
     def merge(cart)
       cart.orders.each do |order|
-        (1..order.quantity).each { |c| add_product_by_id(order.product.id) }
-        cart.remove_product_by_id(order.product.id)
+        (1..order.quantity).each { |c| add_product_by_sku(order.sku) }
+        cart.remove_product_by_sku(order.sku)
       end
     end
 
