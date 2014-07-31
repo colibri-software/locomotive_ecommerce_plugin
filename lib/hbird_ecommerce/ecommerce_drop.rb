@@ -75,9 +75,15 @@ module HbirdEcommerce
         next if !whitelist.key? first
         field = whitelist[first].to_sym
         if last == nil
-          regex = /#{Regexp.escape(v)}/i
-          regex = /^#{Regexp.escape(v)}.*/i if field == :category
-          products = products.and(field => regex)
+          if field == :category
+            v.split(' ').each do |value|
+              regex = /^#{Regexp.escape(value)}.*/i
+              products = products.or(category: regex)
+            end
+          else
+            regex = /#{Regexp.escape(v)}/i
+            products = products.and(field => regex)
+          end
         elsif last == 'min'
           products = products.and(field.gt => v)
         elsif last == 'max'
