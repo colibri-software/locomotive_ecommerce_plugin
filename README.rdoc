@@ -1,3 +1,0 @@
-= Locomotive Ecommerce Plugin
-
-This project rocks and uses MIT-LICENSE.
