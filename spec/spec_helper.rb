@@ -21,7 +21,7 @@ Capybara.default_wait_time = 30
 RSpec.configure do |config|
   config.color_enabled = true
   config.formatter     = 'documentation'
-  config.include HbirdEcommerce::Engine.routes.url_helpers
+  config.include Locomotive::Ecommerce::Engine.routes.url_helpers
   
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation

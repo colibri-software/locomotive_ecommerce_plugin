@@ -1,0 +1,1 @@
+require 'locomotive/ecommerce/plugin'

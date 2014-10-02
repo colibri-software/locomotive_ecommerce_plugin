@@ -9,16 +9,32 @@ gemspec
 gem 'stripe_helper', path: '../../stripe_helper'
 
 # jquery-rails is used by the dummy application
-gem "jquery-rails"
+group :test do
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem "factory_girl"
+  gem "mocha"
+  gem "database_cleaner"
+  gem "factory_girl_rails"
+  gem "simplecov", require: false
+  gem 'shoulda-matchers', require: false
+  gem "debugger"
+  gem "poltergeist"
+end
 
-# Declare any dependencies that are still in development here instead of in
-# your gemspec. These might include edge Rails or gems from your path or
-# Git. Remember to move these dependencies to your gemspec before releasing
-# your gem to rubygems.org.
+# gem "locomotive_cms", path: '../../locomotive_engine', require: 'locomotive/engine'
+# gem "locomotive_plugins", path: '../../locomotive_plugins'
 
-# To use debugger
-# gem 'debugger'
+group :assets do
+  gem 'compass-rails',  '~> 1.1.7'
+  gem 'sass-rails',     '~> 3.2.4'
+  gem 'coffee-rails',   '~> 3.2.2'
+  gem 'uglifier',       '~> 1.2.4'
+end
 
+group :locomotive_plugins do
+  gem "locomotive_ecommerce_plugin", path: '.'
+end
 
 # TEMP
-gem 'flash-dance', :git => 'https://github.com/MunkiPhD/flash-dance.git'
+gem 'flash-dance', :git => 'https://github.com/MunkiPhD/flash-dance.git' # It may be not being used.
