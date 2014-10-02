@@ -104,9 +104,9 @@ module Locomotive
 
       def total
         if tax >= 0
-          cart.purchase_total + tax + shipping + cart.purchase_extras
+          cart.purchase_total + tax + shipping + cart.extras_total
         else
-          cart.purchase_total + shipping + cart.purchase_extras
+          cart.purchase_total + shipping + cart.extras_total
         end
       end
 
@@ -131,7 +131,7 @@ module Locomotive
         define_method(method) {"%0.2f" % @source.send(method).round(2)}
         end
 
-      delegate :cart, :complete, :stripe_token, :completed, :shipping_info, to: :@source
+      delegate :cart, :stripe_token, :completed, :shipping_info, to: :@source
 
       def method_missing(meth, *args, &block)
         if @source.shipping_info.key?(meth)

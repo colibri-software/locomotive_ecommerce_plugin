@@ -34,16 +34,16 @@ This plugin provides many configuration options which are as follows:
 * Only in Stock Items - To show only items that are in stock
 * Estimated Tax Rate (in percent) - The estimated tax percentage to be applied to orders (Default: 15)
 * Tax Model - Slug of the model recording tax rates
-* Country Code Slug -
-* Province/State Code Slug -
-* Precentage Slug -
+* Country Code Slug - Slug field of the country code of the Tax model
+* Province/State Code Slug - Slug field of the province/state code of the Tax model 
+* Precentage Slug - Slug field of the percentage of the Tax model
 * Shipping Model - Slug of the model recording shipping rates
-* Name Slug - 
-* Over Price Break Slug - 
-* Under Price Break Slug - 
-* Price Break - 
+* Name Slug - Slug field of the name from the Shipping Model
+* Over Price Break Slug - Slug field of the over price break
+* Under Price Break Slug - Slug field of the under price break
+* Price Break - The value at wich price breakes are applied
 * Apply extras - Use Javascript to integrate extra charges to total price 
-The extra charges are should be returned as a array of key value pairs where keys represent the name of the extra charge and the value is the amount it represents. The "purchase_total" and "orders" are also passed in to the configuration, and can be utilized to calculate order specific extra charges.
+The extra charges should be returned as a array of key/value pairs where keys represent the name of the extra charge and the value is the amount it represents. The "purchase_total" and "orders" are also passed in to the configuration, and can be utilized to calculate order specific extra charges.
 Example:
 <pre><code>if (purchase_total > 100) {
 	order = {
@@ -57,8 +57,8 @@ Example:
 	}
 }</code></pre>
 * Shop Name - The name of the shop using the plugin
-* Shop Inventory Items -
-* Shop Inventory Items Class -
+* Shop Inventory Items - Excecuted in a javascript_context and returns a mongoid criteria of all line_items
+* Shop Inventory Items Class - Excecuted in a javascript_context and returns a mongoid criteria of all line_items classes 
 * Contact - The email address of the main shop contact 
 
 h3. Liquid Drops
@@ -82,7 +82,38 @@ It has the following attributes:
 * out_of_stock - A boolean that is true if the product is out of stock
 * quantity - The quantity of the current product in order
 * product_quantity - The available quantity of the current product
-* cart - Reference to the cart the product belongs to   
+* cart - Reference to the cart the product belongs to
 
+The plugin also provides an Cart drop, which is accessed like this:
+<pre><code>{{ plugins.ecommerce.cart }}</code></pre>
+
+It has the following attributes:
+
+* line_items - Reference to all the orders in the current cart
+* id - ID of the current Cart
+* extras - A hash containing all the extra charges passed in through "Apply extras" configuration
+* extras_total - The total of all the extra charges in "extras"
+* purchase_total - Total for all orders in the current cart
+* estimated_tax - The estimated taxes to applied on the currrent cart retrieved from "Estimated Tax Rate" configuration
+* subtotal_est_tax - Subtotal of the current cart including: purchase_total, estimated_taxes and the total of the extra charges
+* valid_stock - A boolean indecating whether the orders quantities are in stock
+
+The plugin also provides an Purchase drop, which is accessed like this:
+<pre><code>{{ plugins.ecommerce.cart }}</code></pre>
+
+It has the following attributes:
+
+* id - ID of the current purchase
+* date - Date of the current purchase
+* subtotal_est_tax - Subtotal of the current purchase delegated from the cart
+* shipping_estimate - Estimated shipping amount of the current purchase
+* subtotal_est_shipping - The subtotal of the current purchase including the "subtotal_est_tax" and the "shipping_estimate"
+* tax - The total taxes on the purchase
+* tax_precentage - The percentage taxes applied 
+* total - The total coast of the purchase including "purchase_total", "tax", "shipping" and "extras_total"
+* cart - Reference to the current cart the products belongs to
+* completed - A boolean indicating whether the purchase is complete
+* shipping_info - A hash containing all the provided shipping information
+* stripe_token - The stripe token utilized in the currrent order
 
 This project rocks and uses MIT-LICENSE.
