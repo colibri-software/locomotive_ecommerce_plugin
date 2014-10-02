@@ -1,0 +1,87 @@
+h1. Locomotive Ecommerce Plugin
+
+This is a plugin for LocomotiveCMS. It was created to allow LocomotiveCMS designers to add Ecommerce Functionality.
+
+It provides several Ecommerce features such as: managing shopping carts, assigning shipping and taxes values and managing extra disscounts and price breaks.
+
+h2. Installation
+
+To use this plugin you must be using a version of LocomotiveCMS that has the plugins feature designed by "Colibri Software":https://www.colibri-software.com. You can do this by making the following changes to the Gemfile in you app:
+
+* Remove or comment out the following line:
+@gem 'locomotive_cms', '~> 2.X.X', require: 'locomotive/engine'@
+* Add the following line:
+@gem 'locomotive_cms', require: 'locomotive/engine', git: 'https://github.com/colibri-software/locomotive_engine.git', branch: 'plugins'@
+
+Then add the following lines in your Gemfile to include the plugin:
+<pre><code>group :locomotive_plugins do
+  gem 'locomotive_ecommerce_plugin'
+end</code></pre>
+
+h2. Usage
+
+h3. Configuring Plugin
+
+This plugin provides many configuration options which are as follows:
+* Main App URL - The application main url
+* Main App API Token -
+* Stripe Public Key - Public key of the Stripe account connected to the application
+* Stripe Secret Key - Secret key of the Stripe account connected to the application
+* Cart URL - The path to the cart page
+* Checkout URL - The path to the checkout page
+* Post Checkout URL - The path to which the user should be taken after the checkout
+* Purchases URL - The path to the purchases page
+* Only in Stock Items - To show only items that are in stock
+* Estimated Tax Rate (in percent) - The estimated tax percentage to be applied to orders (Default: 15)
+* Tax Model - Slug of the model recording tax rates
+* Country Code Slug -
+* Province/State Code Slug -
+* Precentage Slug -
+* Shipping Model - Slug of the model recording shipping rates
+* Name Slug - 
+* Over Price Break Slug - 
+* Under Price Break Slug - 
+* Price Break - 
+* Apply extras - Use Javascript to integrate extra charges to total price 
+The extra charges are should be returned as a array of key value pairs where keys represent the name of the extra charge and the value is the amount it represents. The "purchase_total" and "orders" are also passed in to the configuration, and can be utilized to calculate order specific extra charges.
+Example:
+<pre><code>
+	if (purchase_total > 100) {
+		order = {
+		    'Special Discount' : 10, 
+		    'Offer' : -purchase_total/10
+		}
+	} else {
+		order = {
+		    'Special Discount' : 20, 
+		    'Offer' : -purchase_total
+		}
+	}
+</code></pre>
+* Shop Name - The name of the shop using the plugin
+* Shop Inventory Items -
+* Shop Inventory Items Class -
+* Contact - The email address of the main shop contact 
+
+h3. Liquid Drops
+This plugin provides multiple liquid drops to access various attributes of the Cart, Order, Purchases and their state.
+
+The main plugin drop is accessed like this: 
+<pre><code>{{ plugins.ecommerce }}</code></pre>
+
+The plugin also provides an Order drop, which is accessed like this:
+<pre><code>{{ plugins.ecommerce.order }}</code></pre>
+It has the following attributes:
+* id - The current order ID
+* price - The current order price rounded to to 2 decimal places
+* size - The size of the current product
+* color - The color of the currentb product
+* sku - The sku of the current product
+* product - The class of the current product retrived by sku
+* out_of_stock - A boolean that is true if the product is out of stock
+* quantity - The quantity of the current product in order
+* product_quantity - The available quantity of the current product
+* cart - Reference to the cart the product belongs to   
+
+
+This project rocks and uses MIT-LICENSE.
