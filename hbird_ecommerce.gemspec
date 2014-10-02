@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.summary     = "Locomotive plugin for ecommerce including a shopping cart, inventory & user accounts."
 
   s.add_dependency "rails", "~> 3.2.13"
-  s.add_dependency 'locomotive_plugins',    '~> 1.0.0.beta10'
+  s.add_dependency 'locomotive_plugins',    '~> 1.0'
   s.add_dependency 'stripe_helper'
   s.add_dependency 'haml'
   s.add_dependency 'cells'
