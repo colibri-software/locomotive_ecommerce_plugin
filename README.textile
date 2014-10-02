@@ -45,25 +45,24 @@ This plugin provides many configuration options which are as follows:
 * Apply extras - Use Javascript to integrate extra charges to total price 
 The extra charges are should be returned as a array of key value pairs where keys represent the name of the extra charge and the value is the amount it represents. The "purchase_total" and "orders" are also passed in to the configuration, and can be utilized to calculate order specific extra charges.
 Example:
-<pre><code>
-	if (purchase_total > 100) {
-		order = {
-		    'Special Discount' : 10, 
-		    'Offer' : -purchase_total/10
-		}
-	} else {
-		order = {
-		    'Special Discount' : 20, 
-		    'Offer' : -purchase_total
-		}
+<pre><code>if (purchase_total > 100) {
+	order = {
+	    'Special Discount' : 10, 
+	    'Offer' : -purchase_total/10
 	}
-</code></pre>
+} else {
+	order = {
+	    'Special Discount' : 20, 
+	    'Offer' : -purchase_total
+	}
+}</code></pre>
 * Shop Name - The name of the shop using the plugin
 * Shop Inventory Items -
 * Shop Inventory Items Class -
 * Contact - The email address of the main shop contact 
 
 h3. Liquid Drops
+
 This plugin provides multiple liquid drops to access various attributes of the Cart, Order, Purchases and their state.
 
 The main plugin drop is accessed like this: 
@@ -71,7 +70,9 @@ The main plugin drop is accessed like this:
 
 The plugin also provides an Order drop, which is accessed like this:
 <pre><code>{{ plugins.ecommerce.order }}</code></pre>
+
 It has the following attributes:
+
 * id - The current order ID
 * price - The current order price rounded to to 2 decimal places
 * size - The size of the current product
