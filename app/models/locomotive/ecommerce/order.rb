@@ -3,6 +3,7 @@ module Locomotive
     class Order
       include Mongoid::Document
       include ::Mongoid::Timestamps
+      include InventoryInterface
       field      :quantity,   :type => Integer, :default => 1
       field      :sku,        :type => String
       belongs_to :cart,       :class_name => "::Locomotive::Ecommerce::Cart"
@@ -21,37 +22,12 @@ module Locomotive
         self[:quantity]
       end
 
-      def product_price
-        i = product
-        i == nil ? 0 : i.price(sku).to_f
-      end
-
-      def product_name
-        i = product
-        i == nil ? '' : i.description
-      end
-
-      def product_quantity
-        i = product
-        i == nil ? 0 : i.quantity(sku)
-      end
-
-      def product_quantity=(value)
-        i = product
-        i.set_quantity(value, sku)
-        i.save!
-      end
-
       def price
         quantity * product_price
       end
 
       def out_of_stock?
         quantity > product_quantity
-      end
-
-      def to_liquid
-        OrderDrop.new(self)
       end
 
       def self.id_to_sku(id)
@@ -63,20 +39,42 @@ module Locomotive
         self.class.product_class.find_by_sku(sku)
       end
 
-      def size
-        product.size(sku)
+      [:size, :color, :quantity, :price, :name].each do |method|
+        defined = "product_#{method}".to_sym
+        default = [:quantity, :price].include?(method)? 0 : ''
+        method = :description if method == :name
+        define_method(defined) do |sku|
+          i = product
+          if i == nil
+            default
+          else
+            if i.instance_method(method).arity == 0
+              i.send(method)
+            elsif i.instance_method(method).arity == 0
+              i.send(method, sku)
+            end
+          end
+        end
       end
 
-      def color
-        product.color(sku)
+      def product_quantity=(value)
+        i = product
+        if i.respond_to?(:set_quantity)
+          i.set_quantity(value, sku)
+        else
+          i.quantity = value
+        end
+        i.save!
+      end
+
+      def to_liquid
+        OrderDrop.new(self)
       end
 
       private
+
       def self.product_class
-        site = Thread.current[:site]
-        site.plugin_object_for_id('inventory').js3_context.eval(Engine.config_or_default('shop_inventory_items'))
-        # site.plugin_object_for_id('inventory').js3_context['inventory_items']
-        # HbirdInventory::InventoryItem
+        inventory_items_class
       end
     end
     class OrderDrop < ::Liquid::Drop
