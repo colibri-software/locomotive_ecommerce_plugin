@@ -68,6 +68,16 @@ This plugin provides multiple liquid drops to access various attributes of the C
 The main plugin drop is accessed like this: 
 <pre><code>{{ plugins.ecommerce }}</code></pre>
 
+It has the following attributes:
+
+* products - All inventory items
+	Through products you can access all the following params for each item:
+		- 
+* cart - The current cart of the currently signed in user (see the Cart drop below for details)
+* purchase - The current purchase of the currently signed in user (see the Purchace drop below for details)
+* purchases - All purchaces made by the currently signed in user
+* show_out_of_stock - A boolean to check if products that are out of stock should be shown. Can be adjusted through the "Only in Stock Items" configuration option (see the configuration section above) 
+
 The plugin also provides an Cart drop, which is accessed like this:
 <pre><code>{{ plugins.ecommerce.cart }}</code></pre>
 
@@ -75,23 +85,23 @@ It has the following attributes:
 
 * line_items - Reference to all the orders in the current cart
 	Through line_items you can access the orders model which provides the following attributes:
-		* id - The current order ID
-		* price - The current order price rounded to to 2 decimal places
-		* size - The size of the current product
-		* color - The color of the currentb product
-		* sku - The sku of the current product
-		* product - The class of the current product retrived by sku
-		* out_of_stock - A boolean that is true if the product is out of stock
-		* quantity - The quantity of the current product in order
-		* product_quantity - The available quantity of the current product
-		* cart - Reference to the cart the product belongs to
-		* id - ID of the current Cart
-		* extras - A hash containing all the extra charges passed in through "Apply extras" configuration
-		* extras_total - The total of all the extra charges in "extras"
-		* purchase_total - Total for all orders in the current cart
-		* estimated_tax - The estimated taxes to be applied on the currrent cart retrieved from "Estimated Tax Rate" configuration
-		* subtotal_est_tax - Subtotal of the current cart including: purchase_total, estimated_taxes and the total of the extra charges
-		* valid_stock - A boolean indecating whether the orders quantities are in stock
+	 	- id - The current order ID
+		- price - The current order price rounded to to 2 decimal places
+		- size - The size of the current product
+		- color - The color of the currentb product
+		- sku - The sku of the current product
+		- product - The class of the current product retrived by sku
+		- out_of_stock - A boolean that is true if the product is out of stock
+		- quantity - The quantity of the current product in order
+		- product_quantity - The available quantity of the current product
+		- cart - Reference to the cart the product belongs to
+* id - ID of the current Cart
+* extras - A hash containing all the extra charges passed in through "Apply extras" configuration
+* extras_total - The total of all the extra charges in "extras"
+* purchase_total - Total for all orders in the current cart
+* estimated_tax - The estimated taxes to be applied on the currrent cart retrieved from "Estimated Tax Rate" configuration
+* subtotal_est_tax - Subtotal of the current cart including: purchase_total, estimated_taxes and the total of the extra charges
+* valid_stock - A boolean indecating whether the orders quantities are in stock
 
 
 The plugin also provides an Purchase drop, which is accessed like this:
