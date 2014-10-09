@@ -20,10 +20,6 @@ module Locomotive
         !!Engine.config_or_default('with_quantity')
       end
 
-      def flash
-        @context.registers[:controller].flash.to_hash.stringify_keys
-      end
-
       def cart
         unless @cart
           session = @context.registers[:controller].session

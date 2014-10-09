@@ -27,13 +27,5 @@ module Locomotive
           token:  @purchase.id
       end
     end
-
-    class FlashTag < ::Liquid::Tag
-      include EcommerceTagHelper
-      def render(context)
-        super
-        @plugin_obj.helper.do_flash(@plugin_obj.controller)
-      end
-    end
   end
 end

@@ -122,6 +122,26 @@ It has the following attributes:
 
 h3. Liquid tags
 
-h4. Liquid Filters
+The plugin provides a stripe tag which creates a button to show non-integrated stripe payment form and can be used as follows:
+<pre><code>{% ecommerce_stripe %}</code></pre> 
+
+h3. Liquid Filters
+
+Provides a number of liquid filters to help determine the urls for cart updates and checkout and can be utilized as follows:
+
+<pre><code>{{ cart | ecommerce_cart_update_path }}</code></pre>
+Provides the cart update path for the passed in cart
+
+<pre><code>{{ product | ecommerce_add_to_cart_path }}</code></pre>
+Provides the add to cart path for the passed in product
+
+<pre><code>{{ line_item.sku | ecommerce_remove_from_cart_path }}</code></pre>
+Provides the remove from cart path for the product with the passed sku 
+
+<pre><code>{{ purchase | ecommerce_checkout_path }}</code></pre>
+Provides the checkout path for the passed in purchase 
+
+<pre><code>{{ purchase | ecommerce_checkout_update_path }}</code></pre>
+Provides the checkout update path for the passed in purchase 
 
 This project rocks and uses MIT-LICENSE.

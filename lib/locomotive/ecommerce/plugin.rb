@@ -39,8 +39,7 @@ module Locomotive
 
       def self.liquid_tags
         {
-          stripe:   StripeTag,
-          flash:    FlashTag
+          stripe:   StripeTag
         }
       end
 

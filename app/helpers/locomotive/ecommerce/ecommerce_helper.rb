@@ -16,11 +16,6 @@ module Locomotive
         end
       end
 
-      # Flash
-      def do_flash(controller)
-        controller.render_cell 'hbird_ecommerce/flash', :show, flash: controller.flash
-      end
-
       # View Helper
       def as_currency(val)
         "$#{'%.2f' % val}"
