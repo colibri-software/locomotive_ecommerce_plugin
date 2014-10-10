@@ -22,7 +22,7 @@ module Locomotive
       before_page_render :set_config
 
       def self.default_plugin_id
-        'ecommerce'
+        'hbird_ecommerce'
       end
 
       def self.rack_app
