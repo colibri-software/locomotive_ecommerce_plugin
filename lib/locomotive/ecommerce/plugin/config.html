@@ -1,18 +1,10 @@
 <li>
-  <label name="app_url">Main App URL:</label>
-  <input type="text" name="app_url" />
-</li>
-<li>
-  <label name="api_token">Main App API Token:</label>
-  <input type="text" name="api_token" />
+  <label name="stripe_secret">Stripe Secret Key:</label>
+  <input type="text" name="stripe_secret" />
 </li>
 <li>
   <label name="stripe_public">Stripe Public Key:</label>
   <input type="text" name="stripe_public" />
-</li>
-<li>
-  <label name="stripe_secret">Stripe Secret Key:</label>
-  <input type="text" name="stripe_secret" />
 </li>
 <li>
   <label name="cart_url">Cart URL:</label>
@@ -99,6 +91,11 @@
 <li>
   <label name="shop_name">Shop Name</label>
   <input type="text" name="shop_name" />
+</li>
+<li>
+  <label name="remote_order">After Purchase Complete JS3</label>
+  <textarea style="height=400px" type="text" name="after_purchase_hook" />
+  <p class="inline-hints">JS3 that will be run after a purchase has been completer</p>
 </li>
 <li>
   <label name="shop_inventory_update">Shop Inventory Items</label>

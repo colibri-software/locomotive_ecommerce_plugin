@@ -23,7 +23,7 @@ module Locomotive
           desc:   Date.today,
           pk:     StripeHelper.config.public_key,
           stem:   @plugin_obj.path,
-          store:  Engine.config_or_default('app_url'), # changed from 'The Trail Shop'
+          store:  Engine.config_or_default('shop_name'),
           token:  @purchase.id
       end
     end

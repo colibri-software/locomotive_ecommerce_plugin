@@ -37,24 +37,19 @@ module Locomotive
         purchase.completed = true
         purchase.user_id = user.id
         purchase.save!
-
-        send_purchase(purchase, user)
+        PurchaseMailer.purchase_confirmation(user, purchase).deliver
+        after_purchase_hook(purchase, user)
       end
 
       private
 
-      def self.send_purchase(purchase, user)
-        summary = {}
-        purchase.cart.orders.each do |order|
-          summary[order.sku] = order.quantity
-        end
-        Remote::Order.create(
-          shipping_info: purchase.shipping_info,
-          summary:       summary
-        )
-        PurchaseMailer.purchase_confirmation(user, purchase).deliver
-        purchase.transmitted = true
-        purchase.save!
+      def self.after_purchase_hook(purchase, user)
+
+        site = Thread.current[:site]
+        cxt = site.plugin_object_for_id('ecommerce').js3_context
+        cxt['user'] = user
+        cxt['purchase'] = purchase
+        last = cxt.eval(Engine.config_or_default('after_purchase_hook'))
       end
     end
   end
