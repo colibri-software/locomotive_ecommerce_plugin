@@ -36,7 +36,13 @@ module Locomotive
       end
 
       def product
-        self.class.product_class.find_by_sku(sku)
+        klass = self.class.product_class
+
+        if class.respond_to?(:find_by_sku)
+          klass.find_by_sku(sku)
+        else
+          klass.where(sku: sku).first
+        end
       end
 
       [:size, :color, :quantity, :price, :name].each do |method|
