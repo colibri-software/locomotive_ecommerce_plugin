@@ -23,8 +23,6 @@ h2. Usage
 h3. Configuring Plugin
 
 This plugin provides many configuration options which are as follows:
-* Main App URL - The application main url
-* Main App API Token -
 * Stripe Public Key - Public key of the Stripe account connected to the application
 * Stripe Secret Key - Secret key of the Stripe account connected to the application
 * Cart URL - The path to the cart page
