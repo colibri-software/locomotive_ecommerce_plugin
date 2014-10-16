@@ -7,9 +7,9 @@ module Locomotive
         "#{stem}cart/#{cart.id}"
       end
 
-      def add_to_cart_path(product)
+      def add_to_cart_path(product_sku)
         stem = @context.registers[:plugin_object].path
-        "#{stem}add_to_cart/#{product.id}"
+        "#{stem}add_to_cart/#{product_sku}"
       end
 
       def remove_from_cart_path(product_sku)
