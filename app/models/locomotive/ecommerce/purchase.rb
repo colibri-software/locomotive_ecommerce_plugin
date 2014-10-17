@@ -161,7 +161,7 @@ module Locomotive
       [:subtotal_est_tax, :shipping_estimate, :subtotal_est_shipping,
         :shipping, :tax, :tax_percentage, :total].each do |method|
         define_method("#{method.to_s}_value".to_sym) {@source.send(method).round(2)}
-        define_method(method) {"%0.2f" % @source.send(method).round(2)}
+        define_method(method) {"%0.2f" % @source.send(method).round(2) if @source.send(method)}
         end
 
       delegate :cart, :stripe_token, :completed, :shipping_info, to: :@source

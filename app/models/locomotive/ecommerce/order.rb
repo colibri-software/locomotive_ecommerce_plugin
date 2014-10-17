@@ -23,11 +23,11 @@ module Locomotive
       end
 
       def price
-        quantity * product_price(sku).to_i
+        quantity * product_price.to_i
       end
 
       def out_of_stock?
-        quantity > product_quantity(sku)
+        quantity > product_quantity
       end
 
       def self.id_to_sku(id)
@@ -49,7 +49,7 @@ module Locomotive
         defined = "product_#{method}".to_sym
         default = [:quantity, :price].include?(method)? 0 : ''
         method = :description if method == :name
-        define_method(defined) do |sku|
+        define_method(defined) do
           i = product
           if i == nil
             default
@@ -96,18 +96,22 @@ module Locomotive
         "%0.2f" % @source.price.round(2)
       end
 
-      [:size, :color, :quantity, :name].each do |method|
+      def product_price
+        "%0.2f" % @source.product_price.round(2)
+      end
+
+      [:size, :color, :name].each do |method|
         defined = "product_#{method}".to_sym
         define_method(method) do
-          @source.send(defined, @source.sku)
+          @source.send(defined)
         end
-      end 
+      end
 
-      delegate :sku, :product, :out_of_stock?, :product_quantity, :cart, to: :@source
+      delegate :sku, :product, :quantity, :out_of_stock?, :product_quantity, :cart, to: :@source
 
       protected
 
-      attr_accessor :source 
+      attr_accessor :source
     end
   end
 end
