@@ -44,7 +44,7 @@ module Locomotive
         ext = Engine.config_or_default('edit_extra')
         return nil unless ext
         site = Thread.current[:site]
-        cxt = site.plugin_object_for_id('inventory').js3_context
+        cxt = site.plugin_object_for_id('ecommerce').js3_context
         cxt['purchase_total'] = purchase_total
         cxt['orders'] = orders
         js = cxt.eval(ext)
