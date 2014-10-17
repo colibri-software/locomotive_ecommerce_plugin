@@ -38,7 +38,7 @@ module Locomotive
       def product
         klass = self.class.product_class
 
-        if class.respond_to?(:find_by_sku)
+        if klass.respond_to?(:find_by_sku)
           klass.find_by_sku(sku)
         else
           klass.where(sku: sku).first
