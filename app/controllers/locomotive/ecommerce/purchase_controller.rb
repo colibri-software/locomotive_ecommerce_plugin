@@ -3,7 +3,7 @@ require 'stripe'
 module Locomotive
   module Ecommerce
     class PurchaseController < ::Locomotive::Ecommerce::ApplicationController
-      before_filter :authenticate_user!, except: [:do_new_purchase]
+      before_filter :do_authorize, except: [:do_new_purchase]
 
       def create
         @purchase = current_user_cart(self).purchase
@@ -50,6 +50,11 @@ module Locomotive
         cxt['user'] = user
         cxt['purchase'] = purchase
         last = cxt.eval(Engine.config_or_default('after_purchase_hook'))
+      end
+      def do_authorize
+        if Engine.config_or_default('require_user')
+          authenticate_user!
+        end
       end
     end
   end

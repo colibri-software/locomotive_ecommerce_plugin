@@ -32,7 +32,8 @@ module Locomotive
           'edit_extra' => 'add extras through JS',
           'shop_name' => "<insert name>",
           'shop_inventory' => "inventory_itemsUpdate",
-          'contact' => "fake@email.com"
+          'contact' => "fake@email.com",
+          'require_user' => false
         }
         hash = defaults.merge(config_hash)
         hash[key]
