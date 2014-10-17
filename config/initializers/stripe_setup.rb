@@ -24,10 +24,11 @@ module Locomotive
 
       success_proc = lambda do |controller, token, stripe|
         purchase = Purchase.where(_id: token).first
-        PurchaseController.complete(token,
-                                    helper.current_user(controller),
-                                    helper.current_user_cart(controller),
-                                    stripe)
+        Purchase.complete(token,
+          helper.current_user(controller),
+          helper.current_user_cart(controller),
+          stripe,
+          controller.session)
         controller.flash[:notice] = "Thank you for your purchase."
         helper.post_checkout_path
       end
