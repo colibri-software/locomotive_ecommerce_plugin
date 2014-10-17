@@ -47,6 +47,7 @@ module Locomotive
         cxt = site.plugin_object_for_id('ecommerce').js3_context
         cxt['purchase_total'] = purchase_total
         cxt['orders'] = orders
+        cxt['purchase'] = purchase
         js = cxt.eval(ext)
 
         return js
@@ -61,7 +62,6 @@ module Locomotive
             ext += value
           end
         end
-        
         return ext
       end
 
