@@ -11,6 +11,29 @@ module Locomotive
       field   :stripe_token,    :type => String
       has_one :cart,            :class_name => "::Locomotive::Ecommerce::Cart"
 
+      def self.complete(purchase_id, user, cart, stripeToken, session)
+        purchase = Purchase.where(_id: purchase_id).first
+
+        #Reset user cart
+        purchase.cart.user_id = nil
+        purchase.cart.save!
+        new_cart = Cart.create
+        new_cart.user_id = user.id if user
+        new_cart.save!
+        session[:cart_id] = new_cart.id
+
+        #complete purchase
+        purchase.stripe_token = stripeToken
+        purchase.complete
+        purchase.completed = true
+        purchase.user_id = user.id if user
+        purchase.save!
+        if user
+          PurchaseMailer.purchase_confirmation(user, purchase).deliver
+        end
+        after_purchase_hook(purchase, user)
+      end
+
       def complete
         cart.orders.each { |order| order.product_quantity -= order.quantity }
       end
@@ -110,6 +133,16 @@ module Locomotive
         end
       end
 
+      protected
+
+      def self.after_purchase_hook(purchase, user)
+
+        site = Thread.current[:site]
+        cxt = site.plugin_object_for_id('ecommerce').js3_context
+        cxt['user'] = user
+        cxt['purchase'] = purchase
+        last = cxt.eval(Engine.config_or_default('after_purchase_hook'))
+      end
     end
 
     class PurchaseDrop < ::Liquid::Drop
