@@ -115,9 +115,9 @@ module Locomotive
           query_hash = {}
           query_hash[name_field] = self.shipping_method
           method = ct.entries.where(query_hash).first
-          if self.cart.purchase_total > price_break
+          if method && self.cart.purchase_total > price_break
             @shipping = method.send(over_field).to_f
-          else
+          elsif method
             @shipping = method.send(under_field).to_f
           end
         end

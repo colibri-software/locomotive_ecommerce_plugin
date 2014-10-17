@@ -12,10 +12,12 @@ module Locomotive
         super
         session = context.registers[:controller].session
         site = Thread.current[:site]
-        user_from_plugin = site.plugin_object_for_id('identity_plugin').js3_context['identity_plugin_users']
-        user = user_from_plugin.find(session[:user_id])
-        # user = IdentityPlugin::User.find(session[:user_id])
-        id = user == nil ? nil : user.id
+        id = nil
+        if session[:user_id]
+          user_from_plugin = site.plugin_object_for_id('identity_plugin').js3_context['identity_plugin_users']
+          user = user_from_plugin.find(session[:user_id])
+          id = user == nil ? nil : user.id
+        end
         cart = Cart.find_or_create(id, session)
         @purchase = cart.purchase
         context.registers[:controller].render_cell 'stripe_helper/stripe', :show,
