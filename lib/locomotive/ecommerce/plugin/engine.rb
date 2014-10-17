@@ -29,7 +29,6 @@ module Locomotive
           'shipping_over_slug' => 'over',
           'shipping_under_slug' => 'under',
           'price_break' => '100',
-          'edit_extra' => 'add extras through JS',
           'shop_name' => "<insert name>",
           'shop_inventory' => "inventory_itemsUpdate",
           'contact' => "fake@email.com",
