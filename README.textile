@@ -111,7 +111,7 @@ It has the following attributes:
 * shipping_estimate - Estimated shipping amount of the current purchase
 * subtotal_est_shipping - The subtotal of the current purchase including the "subtotal_est_tax" and the "shipping_estimate"
 * tax - The total taxes on the purchase
-* tax_precentage - The percentage taxes applied 
+* tax_percentage - The percentage taxes applied 
 * total - The total coast of the purchase including "purchase_total", "tax", "shipping" and "extras_total"
 * cart - Reference to the current cart the products belongs to
 * completed - A boolean indicating whether the purchase is complete

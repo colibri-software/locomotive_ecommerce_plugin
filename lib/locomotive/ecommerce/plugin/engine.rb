@@ -24,7 +24,7 @@ module Locomotive
           'estimated_tax_rate' => '15',
           'country_slug' => 'country',
           'province_slug' => 'province',
-          'precentage_slug' => 'precentage',
+          'percentage_slug' => 'percentage',
           'shipping_name_slug' => 'name',
           'shipping_over_slug' => 'over',
           'shipping_under_slug' => 'under',

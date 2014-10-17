@@ -43,42 +43,42 @@ module Locomotive
       end
 
       def tax
-        if precent = tax_precentage
+        if precent = tax_percentage
           cart.purchase_total * (precent.to_f/100)
         else
           -1
         end
       end
 
-      def tax_precentage
-        unless @tax_precentage
+      def tax_percentage
+        unless @tax_percentage
           ct = Thread.current[:site].content_types.where(slug: Engine.config_or_default('tax_model')).first
           if ct
             query_hash = {}
             country_field = Engine.config_or_default('country_slug').to_sym
             province_field = Engine.config_or_default('province_slug').to_sym
-            precentage_field = Engine.config_or_default('precentage_slug').to_sym
+            percentage_field = Engine.config_or_default('percentage_slug').to_sym
             query_hash[country_field] = /#{shipping_info[country_field.to_s]}/i
             query = ct.entries.where(query_hash)
             if query.count == 1
-              @tax_precentage = query.first.send(precentage_field)
+              @tax_percentage = query.first.send(percentage_field)
             elsif query.count > 0
               query_hash = {}
               query_hash[province_field] = /#{shipping_info[province_field.to_s]}/i
               query = query.and(query_hash)
               if query.count > 0
-                @tax_precentage = query.first.send(precentage_field)
+                @tax_percentage = query.first.send(percentage_field)
               else
-                @tax_precentage = nil
+                @tax_percentage = nil
               end
             else
-              @tax_precentage = nil
+              @tax_percentage = nil
             end
           else
-            @tax_precentage = nil
+            @tax_percentage = nil
           end
         end
-        @tax_precentage
+        @tax_percentage
       end
 
       def shipping
@@ -126,7 +126,7 @@ module Locomotive
       end
 
       [:subtotal_est_tax, :shipping_estimate, :subtotal_est_shipping,
-        :shipping, :tax, :tax_precentage, :total].each do |method|
+        :shipping, :tax, :tax_percentage, :total].each do |method|
         define_method("#{method.to_s}_value".to_sym) {@source.send(method).round(2)}
         define_method(method) {"%0.2f" % @source.send(method).round(2)}
         end
