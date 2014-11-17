@@ -23,7 +23,7 @@ module Locomotive
       end
 
       def price
-        quantity * product_price.to_i
+        quantity * product_price.to_f
       end
 
       def out_of_stock?
